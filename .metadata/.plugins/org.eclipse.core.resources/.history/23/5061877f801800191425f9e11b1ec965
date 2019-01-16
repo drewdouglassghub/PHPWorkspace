@@ -1,0 +1,8 @@
+<?php
+
+	$yourName = "Drew Douglass";
+
+?>
+
+<h1>PHP Basics</h1>
+<?php "My name is " . <h2>$yourName<h2> . ".";?>

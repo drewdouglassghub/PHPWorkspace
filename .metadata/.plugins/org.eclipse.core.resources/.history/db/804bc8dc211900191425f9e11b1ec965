@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset = "utf-8">
+<script src="modernizr-2.js"></script>	
+<!--
+ My WDV221 Homework
+ Author: Drew Douglass
+ Date: 1/11/19
+ -->
+<title>PHP Basics</title>
+<link href="style.css" rel="stylesheet" style="text/css"/>
+</head>
+<body>
+
+<?php
+
+	$yourName = "Drew Douglass";
+	$assignmentName = "PHP Basics";
+	
+	echo "<h1>" . $assignmentName . "</h1>";
+	//echo "<h2>" . $yourName . "</h2>";
+?>
+
+<h2><?php echo $yourName; ?></h2>
+
+<?php
+	
+ 	$number1 = 10;
+	$number2 = 17;
+	
+
+	echo "<p>" . $number1 . "</p>";
+	echo "<p>" . $number2 . "</p>";
+	
+	$total = $number1 + $number2;
+	
+	echo "<h3>" . $total . "<h3>";
+
+	?>
+
+<?php 
+	
+	<script>var languages = ["PHP", "JavaScript", "HTML"];</script>
+	
+	echo "document.write(languages1);"
+
+	?>
+
+</body>
+</html>

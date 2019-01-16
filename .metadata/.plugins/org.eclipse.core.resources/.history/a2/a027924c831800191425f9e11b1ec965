@@ -1,0 +1,18 @@
+<?php
+
+	$myName = "Drew Douglass";
+	$assignmentName = "PHP Basics";
+	echo $x = 10;
+	echo $y = 27;
+	
+
+echo "<h1>" . $assignmentName . "</h1>";
+echo "<h2>" . $myName . "</h2>";
+$x + $y = $total;
+
+
+echo "<h3>" . $total . "<h3>";
+
+
+
+?>

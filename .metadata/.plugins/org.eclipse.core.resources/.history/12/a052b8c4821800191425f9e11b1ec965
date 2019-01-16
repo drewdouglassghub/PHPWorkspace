@@ -1,0 +1,15 @@
+<?php
+
+	$yourName = "Drew Douglass";
+
+
+
+echo "<h1>"PHP Basics"</h1>"
+echo "<h2> . $yourName . "</h2>";
+$x + $y = $total;
+
+echo . $total . ;
+
+
+
+?>

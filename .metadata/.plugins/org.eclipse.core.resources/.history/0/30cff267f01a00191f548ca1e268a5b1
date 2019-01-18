@@ -1,0 +1,54 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset = "utf-8">
+<script src="modernizr-2.js"></script>
+<!--
+My WDV221 Homework
+Author: Drew Douglass
+Date: 1/11/19
+-->
+<title>PHP Homework</title>
+<link href="style.css" rel="stylesheet" style="text/css"/>
+</head>
+<body>
+
+
+<?php
+
+if (isset($_POST['submit']))
+{
+	dateFormat();
+	internationalDate();
+}
+
+function internationalDate(){
+	
+	
+	$date = $_POST["submit"];
+	$date = strtotime($date);
+	echo date("d/m/Y", $date) . "<br>";
+	
+}
+
+
+function dateFormat(){
+	
+	$date = $_POST["submit"];
+	$date = strtotime($date);
+	echo date("m/d/Y", $date) . "<br>";
+	
+}
+
+?>
+
+<form action="phpFunctions.php" method="post">
+Date: <input type="text" name="submit"><br>
+<input type="submit" >
+</form>
+
+
+
+</body>
+</html>

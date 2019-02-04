@@ -4,7 +4,7 @@
 <meta charset = "utf-8">
 <script src="modernizr-2.js"></script>	
 <!--
- My WDV221 Homework
+ My WDV341 Homework
  Author: Drew Douglass
  Date: 1/11/19
 -->
@@ -21,10 +21,13 @@
 		<ul>
 			<li><a href="http://www.drewdouglass.net/index.html">Home</a><li>
 			<li><a href="http://drewdouglass.net/WDV341/testGit.php">TestGit</a><li>
+			<li><a href="http://drewdouglass.net/WDV341/PHPBasics.php">PHP Basics</a><li>
+			<li><a href="http://drewdouglass.net/WDV341/phpFunctions.php">PHP Functions</a><li>
+			<li><a href="http://drewdouglass.net/WDV341/Form.php">Form Handler</a><li>
 		</ul>
 	</nav>
 	
 	
-	
+	&copy; 2010-<?php echo date("Y");?>
 </body>
 </html>

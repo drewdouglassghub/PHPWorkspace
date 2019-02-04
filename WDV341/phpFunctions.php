@@ -5,9 +5,9 @@
 <meta charset = "utf-8">
 <script src="modernizr-2.js"></script>
 <!--
-My WDV221 Homework
+My WDV341 Homework
 Author: Drew Douglass
-Date: 1/11/19
+Date: 1/20/19
 -->
 <title>PHP Homework</title>
 <link href="style.css" rel="stylesheet" style="text/css"/>
@@ -22,6 +22,8 @@ if (isset($_POST['submit']))
 	dateFormat();
 	internationalDate();
 	stringMod();
+	formatNumber();
+	formatCurrency();
 }
 
 function internationalDate(){
@@ -54,13 +56,26 @@ function stringMod(){
 	
 	if (strpos($date, $school) == true){
 		
-		echo "True";
+		echo "True". "<br>";
 	}
 	else{
-		echo "False";
+		echo "False" . "<br>";
 	}
 	
 	
+}
+
+function formatNumber(){
+	
+	$number = 1234567890;
+	echo number_format($number,2). "<br>";
+}
+
+function formatCurrency(){
+	
+	
+	$money = 123456;
+	echo "$". number_format($money, 2). "<br>";
 }
 
 ?>

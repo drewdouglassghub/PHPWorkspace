@@ -23,6 +23,7 @@
 			<li><a href="http://drewdouglass.net/WDV341/testGit.php">TestGit</a><li>
 			<li><a href="http://drewdouglass.net/WDV341/PHPBasics.php">PHP Basics</a><li>
 			<li><a href="http://drewdouglass.net/WDV341/phpFunctions.php">PHP Functions</a><li>
+			<li><a href="http://drewdouglass.net/WDV341/EmailerTest.php">PHP Emailer Test</a><li>
 			<li><a href="http://drewdouglass.net/WDV341/Form.php">Form Handler</a><li>
 		</ul>
 	</nav>

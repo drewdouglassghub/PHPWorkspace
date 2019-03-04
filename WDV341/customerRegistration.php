@@ -1,0 +1,286 @@
+<?php 
+session_start();
+	$customer_id = "";
+	$customer_name = "";
+	$customer_phone="";
+	$customer_email = "";
+	$customer_role = "";
+	$customer_badge = "";
+	$customer_meals = "";
+	$customer_requests = "";
+
+	
+	$custNameErrMsg = "";
+	$custPhoneErrMsg = "";
+	$custEmailErrMsg = "";
+	$custRoleErrMsg = "";
+	$custBadgeErrMsg = "";
+	$custMealsErrMsg = "";
+	$custRequestsErrMsg = "";
+
+	$validForm = false;
+	
+	if(isset($_POST["submit"]))
+	{	
+		//The form has been submitted and needs to be processed
+		
+		
+		//Validate the form data here!
+	
+		//Get the name value pairs from the $_POST variable into PHP variables
+		//This example uses PHP variables with the same name as the name atribute from the HTML form
+		$customer_id = $_POST['customer_id'];
+		$customer_name = $_POST['customer_name'];
+		$customer_phone = $_POST['customer_phone'];
+		$customer_email = $_POST['customer_email'];
+		$customer_role = $_POST['customer_role'];
+		$customer_badge = $_POST['customer_badge'];
+		$customer_meals = $_POST['meals'];
+		$customer_requests = $_POST['customer_requests'];
+		
+	function validateCustomerName($inName)
+			{
+				global $validForm, $customerNameErrMsg;		//Use the GLOBAL Version of these variables instead of making them local
+				$customerNameErrMsg = "";
+				
+				if($inName == "")
+				{
+					$validForm = false;
+					$customerNameErrMsg = "Name cannot be spaces";
+				}
+			}//end validateName()
+
+			function validateCustomerPhone($inPhone)
+			{
+				global $validForm, $customerPhoneErrMsg;		//Use the GLOBAL Version of these variables instead of making them local
+				$customerPhoneErrMsg = "";
+				
+				if(!preg_match('/^[0-9]{3}([- ]?[0-9]{3}[-]?[0-9]{4})?$/', $inPhone))
+					 {
+						$validForm = false;
+						$phoneErrMsg = "Invalid phone number"; 
+					 }		
+			}//end validatePhone()			
+					
+			function validateEmail($inEmail)
+			{
+				global $validForm, $emailErrMsg;			//Use the GLOBAL Version of these variables instead of making them local
+				$emailErrMsg = "";							//Clear the error message. 
+				
+				// Remove all illegal characters from email
+				$inEmail = filter_var($inEmail, FILTER_SANITIZE_EMAIL);
+
+				// Validate e-mail
+				$inEmail = filter_var($inEmail, FILTER_VALIDATE_EMAIL);
+
+				if($inEmail === false)
+				{
+					$validForm = false;
+					$emailErrMsg = "Invalid email"; 					
+				}
+			}//end validateEmail()					
+			
+			
+		//VALIDATE FORM DATA  using functions defined above
+		$validForm = true;		//switch for keeping track of any form validation errors
+		
+		validateCustomerName($customer_name);
+		validateCustomerPhone($inPhone);
+		validateEmail($customer_email);		
+		
+		if($validForm)
+		{
+			$message = "All good";
+			
+			$servername = "10.123.0.54";
+			$username = "walrusdodges_php";
+			$password = "";
+				
+			try {
+		
+				require 'walrusdodges_php/connectPDO.php';	//CONNECT to the database
+		
+				try {
+					$conn = new PDO("mysql:host=$servername;dbname=walrusdodges_php", $username, $password);
+					// set the PDO error mode to exception
+					$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+					echo "Connected successfully";
+				}
+				catch(PDOException $e)
+				{
+					echo "Connection failed: " . $e->getMessage();
+				}
+				
+				//mysql DATE stores data in a YYYY-MM-DD format
+				$todaysDate = date("Y-m-d");		//use today's date as the default input to the date( )
+		
+				//Create the SQL command string
+				$sql = "INSERT INTO customers (";
+				$sql .= "customer_name, ";
+				$sql .= "customer_phone, ";
+				$sql .= "customer_email, ";
+				$sql .= "customer_role, ";
+				$sql .= "customer_badge, ";
+				$sql .= "customer_meals, ";
+				$sql .= "customer_requests, ";
+				$sql .= "customer_dateAdded "; //Last column does NOT have a comma after it.
+				$sql .= ") VALUES (:name, :phone, :email, :role, :badge, :meals, :requests, :dateAdded)";
+		
+				//PREPARE the SQL statement
+				$stmt = $conn->prepare($sql);
+		
+				//BIND the values to the input parameters of the prepared statement
+				$stmt->bindParam(':name', $customer_name);
+				$stmt->bindParam(':phone', $customer_phone);
+				$stmt->bindParam(':email', $customer_email);
+				$stmt->bindParam(':role', $customer_role);
+				$stmt->bindParam(':badge', $customer_badge);
+				$stmt->bindParam(':meals', $customer_meals);
+				$stmt->bindParam(':requests', $customer_requests);
+				$stmt->bindParam(':dateAdded', $todaysDate);
+		
+				//EXECUTE the prepared statement
+				$stmt->execute();
+		
+				$message = "The customer has been registered.";
+			}
+				
+			catch(PDOException $e)
+			{
+				$message = "There has been a problem. The system administrator has been contacted. Please try again later.";
+		
+				error_log($e->getMessage());			//Delivers a developer defined error message to the PHP log file at c:\xampp/php\logs\php_error_log
+				error_log(var_dump(debug_backtrace()));
+					
+				//Clean up any variables or connections that have been left hanging by this error.
+					
+				header('Location: files/505_error_response_page.php');	//sends control to a User friendly page
+			}
+		
+		}
+		else
+		{
+			$message = "Something went wrong";
+		}//ends check for valid form
+		
+		}
+		else
+		{
+			//Form has not been seen by the user.  display the form
+		}// ends if submit
+		?>
+		
+		
+<!DOCTYPE html>
+<html >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>WDV341 Intro PHP - Self Posting Form</title>
+<style>
+
+#orderArea	{
+	width:600px;
+	border:thin solid black;
+	margin: auto auto;
+	padding-left: 20px;
+}
+
+#orderArea h3	{
+	text-align:center;	
+}
+.error	{
+	color:red;
+	font-style:italic;	
+}
+
+</style>
+</head>
+
+<body>
+<h1>WDV341 Intro PHP</h1>
+<h2>Unit-5 and Unit-6 Self Posting - Form Validation Assignment
+
+
+</h2>
+<p>&nbsp;</p>
+
+
+<div id="orderArea">
+<form name="form3" method="post" action="customerRegistration.php">
+  <h3>Customer Registration Form</h3>
+
+  <?php
+            //If the form was submitted and valid and properly put into database display the INSERT result message
+			if($validForm)
+			{
+        ?>
+            <h1><?php echo $message ?></h1>
+        
+        <?php
+			}
+			else	//display form
+			{
+        ?>
+  
+      <p>
+        <label for="textfield">Name:</label>
+        <input type="text" name="customer_name" id="textfield" value="<?php echo $customer_name;  ?>">
+         <span class="errMsg"> <?php echo $custNameErrMsg; ?></span>
+      </p>
+      <p>
+        <label for="textfield2">Phone Number:</label>
+        <input type="text" name="customer_phone" id="textfield2" value="<?php echo $customer_phone;  ?>">
+        <span class="errMsg"> <?php echo $custPhoneErrMsg; ?></span>
+      </p>
+      <p>
+        <label for="textfield3">Email Address: </label>
+        <input type="text" name="customer_email" id="textfield3" value="<?php echo $customer_email;  ?>">
+        <span class="errMsg"> <?php echo $custEmailErrMsg; ?></span>
+      </p>
+      <p>
+        <label for="select">Registration: </label>
+        <select name="customer_role" id="select">
+          <option value="">Choose Type</option>
+          <option value="evt01">Attendee</option>
+          <option value="evt02">Presenter</option>
+          <option value="evt03">Volunteer</option>
+          <option value="evt04">Guest</option>
+        </select>
+      </p>
+      <p>Badge Holder:</p>
+      <p>
+        <input type="radio" name="customer_badge" id="radio" value="radio">
+        <label for="radio">Clip</label> <br>
+        <input type="radio" name="customer_badge" id="radio2" value="radio2">
+        <label for="radio2">Lanyard</label> <br>
+        <input type="radio" name="customer_badge" id="radio3" value="radio3">
+        <label for="radio3">Magnet</label>
+      </p>
+      <p>Provided Meals (Select all that apply):</p>
+      <p>
+        <input type="checkbox" name="meals" id="checkbox">
+        <label for="checkbox">Friday Dinner</label><br>
+        <input type="checkbox" name="meals" id="checkbox2">
+        <label for="checkbox2">Saturday Lunch</label><br>
+        <input type="checkbox" name="meals" id="checkbox3">
+        <label for="checkbox3">Sunday Award Brunch</label>
+      </p>
+      <p>
+        <label for="textarea">Special Requests/Requirements: (Limit 200 characters)<br>
+        </label>
+        <textarea name="textarea" cols="40" rows="5" id="textarea"></textarea>
+      </p>
+   
+  <p>
+    <input type="submit" name="submit" id="submit" value="Submit">
+    <input type="reset" name="btnReset" id="reset" value="Reset" onClick="clearForm()">
+  </p>
+</form>
+<?php
+			}//end else
+        ?>    	
+        
+</div>
+
+</body>
+</html>

@@ -25,10 +25,11 @@
 			<li><a href="http://drewdouglass.net/WDV341/phpFunctions.php">PHP Functions</a><li>
 			<li><a href="http://drewdouglass.net/WDV341/EmailerTest.php">PHP Emailer Test</a><li>
 			<li><a href="http://drewdouglass.net/WDV341/Form.php">Form Handler</a><li>
+			<li><a href="http://drewdouglass.net/WDV341/customerRegistration.php">Customer Registration</a><li>
 		</ul>
 	</nav>
 	
 	
-	&copy; 2010-<?php echo date("Y");?>
+	&copy; 2017-<?php echo date("Y");?>
 </body>
 </html>

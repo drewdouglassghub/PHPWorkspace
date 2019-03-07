@@ -10,13 +10,13 @@ session_start();
 	$customer_requests = "";
 
 	
-	$custNameErrMsg = "";
-	$custPhoneErrMsg = "";
-	$custEmailErrMsg = "";
-	$custRoleErrMsg = "";
-	$custBadgeErrMsg = "";
-	$custMealsErrMsg = "";
-	$custRequestsErrMsg = "";
+	$customerNameErrMsg = "";
+	$customerPhoneErrMsg = "";
+	$customerEmailErrMsg = "";
+	$customerRoleErrMsg = "";
+	$customerBadgeErrMsg = "";
+	$customerMealsErrMsg = "";
+	$customerRequestsErrMsg = "";
 
 	$validForm = false;
 	
@@ -35,7 +35,7 @@ session_start();
 		$customer_email = $_POST['customer_email'];
 		$customer_role = $_POST['customer_role'];
 		$customer_badge = $_POST['customer_badge'];
-		$customer_meals = $_POST['meals'];
+		$customer_meals = $_POST['customer_meals'];
 		$customer_requests = $_POST['customer_requests'];
 		
 	function validateCustomerName($inName)
@@ -55,17 +55,17 @@ session_start();
 				global $validForm, $customerPhoneErrMsg;		//Use the GLOBAL Version of these variables instead of making them local
 				$customerPhoneErrMsg = "";
 				
-				if(!preg_match('/^[0-9]{3}([- ]?[0-9]{3}[-]?[0-9]{4})?$/', $inPhone))
+				if(!preg_match("/^([0-9]{3})[0-9]{3}-[0-9]{4}$/", $inPhone))
 					 {
 						$validForm = false;
-						$phoneErrMsg = "Invalid phone number"; 
+						$customerPhoneErrMsg = "Invalid phone number"; 
 					 }		
 			}//end validatePhone()			
 					
 			function validateEmail($inEmail)
 			{
-				global $validForm, $emailErrMsg;			//Use the GLOBAL Version of these variables instead of making them local
-				$emailErrMsg = "";							//Clear the error message. 
+				global $validForm, $customerEmailErrMsg;			//Use the GLOBAL Version of these variables instead of making them local
+				$customerEmailErrMsg = "";							//Clear the error message. 
 				
 				// Remove all illegal characters from email
 				$inEmail = filter_var($inEmail, FILTER_SANITIZE_EMAIL);
@@ -76,40 +76,28 @@ session_start();
 				if($inEmail === false)
 				{
 					$validForm = false;
-					$emailErrMsg = "Invalid email"; 					
+					$customerEmailErrMsg = "Invalid email"; 					
 				}
-			}//end validateEmail()					
+			}//end validateEmail()			
 			
-			
+
 		//VALIDATE FORM DATA  using functions defined above
 		$validForm = true;		//switch for keeping track of any form validation errors
 		
 		validateCustomerName($customer_name);
-		validateCustomerPhone($inPhone);
+		validateCustomerPhone($customer_phone);
 		validateEmail($customer_email);		
 		
 		if($validForm)
 		{
 			$message = "All good";
 			
-			$servername = "10.123.0.54";
-			$username = "walrusdodges_php";
-			$password = "";
+	
 				
 			try {
 		
-				require 'walrusdodges_php/connectPDO.php';	//CONNECT to the database
+				require 'connectPDO.php';	//CONNECT to the database
 		
-				try {
-					$conn = new PDO("mysql:host=$servername;dbname=walrusdodges_php", $username, $password);
-					// set the PDO error mode to exception
-					$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-					echo "Connected successfully";
-				}
-				catch(PDOException $e)
-				{
-					echo "Connection failed: " . $e->getMessage();
-				}
 				
 				//mysql DATE stores data in a YYYY-MM-DD format
 				$todaysDate = date("Y-m-d");		//use today's date as the default input to the date( )
@@ -126,6 +114,7 @@ session_start();
 				$sql .= "customer_dateAdded "; //Last column does NOT have a comma after it.
 				$sql .= ") VALUES (:name, :phone, :email, :role, :badge, :meals, :requests, :dateAdded)";
 		
+				
 				//PREPARE the SQL statement
 				$stmt = $conn->prepare($sql);
 		
@@ -139,6 +128,8 @@ session_start();
 				$stmt->bindParam(':requests', $customer_requests);
 				$stmt->bindParam(':dateAdded', $todaysDate);
 		
+				
+				
 				//EXECUTE the prepared statement
 				$stmt->execute();
 		
@@ -154,7 +145,7 @@ session_start();
 					
 				//Clean up any variables or connections that have been left hanging by this error.
 					
-				header('Location: files/505_error_response_page.php');	//sends control to a User friendly page
+				//header('Location: files/505_error_response_page.php');	//sends control to a User friendly page
 			}
 		
 		}
@@ -225,17 +216,17 @@ session_start();
       <p>
         <label for="textfield">Name:</label>
         <input type="text" name="customer_name" id="textfield" value="<?php echo $customer_name;  ?>">
-         <span class="errMsg"> <?php echo $custNameErrMsg; ?></span>
+         <span class="errMsg"> <?php echo $customerNameErrMsg; ?></span>
       </p>
       <p>
         <label for="textfield2">Phone Number:</label>
         <input type="text" name="customer_phone" id="textfield2" value="<?php echo $customer_phone;  ?>">
-        <span class="errMsg"> <?php echo $custPhoneErrMsg; ?></span>
+        <span class="errMsg"> <?php echo $customerPhoneErrMsg; ?></span>
       </p>
       <p>
         <label for="textfield3">Email Address: </label>
         <input type="text" name="customer_email" id="textfield3" value="<?php echo $customer_email;  ?>">
-        <span class="errMsg"> <?php echo $custEmailErrMsg; ?></span>
+        <span class="errMsg"> <?php echo $customerEmailErrMsg; ?></span>
       </p>
       <p>
         <label for="select">Registration: </label>
@@ -258,11 +249,11 @@ session_start();
       </p>
       <p>Provided Meals (Select all that apply):</p>
       <p>
-        <input type="checkbox" name="meals" id="checkbox">
+        <input type="checkbox" name="customer_meals" id="checkbox">
         <label for="checkbox">Friday Dinner</label><br>
-        <input type="checkbox" name="meals" id="checkbox2">
+        <input type="checkbox" name="customer_meals" id="checkbox2">
         <label for="checkbox2">Saturday Lunch</label><br>
-        <input type="checkbox" name="meals" id="checkbox3">
+        <input type="checkbox" name="customer_meals" id="checkbox3">
         <label for="checkbox3">Sunday Award Brunch</label>
       </p>
       <p>
@@ -273,7 +264,7 @@ session_start();
    
   <p>
     <input type="submit" name="submit" id="submit" value="Submit">
-    <input type="reset" name="btnReset" id="reset" value="Reset" onClick="clearForm()">
+    <input type="reset" name="btnReset" id="reset" value="Reset" onClick="clearForm(form3)">
   </p>
 </form>
 <?php

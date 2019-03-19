@@ -114,6 +114,17 @@ session_start();
 					$emailErrMsg = "Invalid email"; 					
 				}
 			}//end validateEmail()		
+			
+			function validateAddress($inAddress)
+			{
+				global $validForm, $addressErrMsg;
+				$addressErrMsg = "";
+				
+				if($inAddress !== "")
+				{
+					echo "Error.  Please resubmit the form.";
+				}
+			}
 		
 		//VALIDATE FORM DATA  using functions defined above
 		$validForm = true;		//switch for keeping track of any form validation errors
@@ -192,9 +203,6 @@ session_start();
 <head>
 	<meta charset="utf-8">
 	<title>Presenting Information Technology</title>
-
-	
-
 </head>
 
 <body>
@@ -226,6 +234,8 @@ session_start();
         <p>Once the form is submitted and validated it will call the addPresenters.php page. That page will pull the form data into the PHP and <br>
 		add a new record to the database.</p>
         <form id="presentersForm" name="presentersForm" method="post" action="addPresenter.php">
+        <div class="g-recaptcha" data-sitekey="6LcDSJYUAAAAAPd2z5GPoLqfRM_zJs8713oVQ7dt"></div>
+    	<script src='https://www.google.com/recaptcha/api.js'></script>
         	<fieldset>
               <legend>Add a Presenter</legend>
               <p>
@@ -258,15 +268,26 @@ session_start();
               </p>            
               
             </fieldset>
+            
+             <div class="g-recaptcha" data-sitekey="6LcDSJYUAAAAAPd2z5GPoLqfRM_zJs8713oVQ7dt"></div>
+    		<script src='https://www.google.com/recaptcha/api.js'></script>
          	<p>
             	<input type="submit" name="submit" id="submit" value="Add Customer" />
             	<input type="reset" name="button2" id="button2" value="Clear Form" onClick="clearForm()" />
         	</p>  
         </form>
+        
+      
+		
+		
+		
         <?php
+        
 			}//end else
         ?>    	
+     
         
+        	
 	</main>
     
 	<footer>

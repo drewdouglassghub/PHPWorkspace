@@ -8,6 +8,7 @@ session_start();
 	$customer_badge = "";
 	$customer_meals = "";
 	$customer_requests = "";
+	$customer_address = "";
 
 	
 	$customerNameErrMsg = "";
@@ -17,6 +18,7 @@ session_start();
 	$customerBadgeErrMsg = "";
 	$customerMealsErrMsg = "";
 	$customerRequestsErrMsg = "";
+	$customerAddressErrMsg = "";
 
 	$validForm = false;
 	
@@ -37,6 +39,19 @@ session_start();
 		$customer_badge = $_POST['customer_badge'];
 		$customer_meals = $_POST['customer_meals'];
 		$customer_requests = $_POST['customer_requests'];
+		$customer_address = $_POST['customer_address'];
+		
+		
+	function clearForm()
+	{
+		$customer_name = "";
+		$customer_phone = "";
+		$customer_email = "";
+		$customer_role = "";
+		$customer_badge = "";
+		$customer_meals = "";
+		$customer_requests = "";
+	}
 		
 	function validateCustomerName($inName)
 			{
@@ -55,7 +70,7 @@ session_start();
 				global $validForm, $customerPhoneErrMsg;		//Use the GLOBAL Version of these variables instead of making them local
 				$customerPhoneErrMsg = "";
 				
-				if(!preg_match("/^([0-9]{3})[0-9]{3}-[0-9]{4}$/", $inPhone))
+				if(!preg_match("/^[0-9]{3}[0-9]{3}[0-9]{4}$/", $inPhone))
 					 {
 						$validForm = false;
 						$customerPhoneErrMsg = "Invalid phone number"; 
@@ -78,8 +93,19 @@ session_start();
 					$validForm = false;
 					$customerEmailErrMsg = "Invalid email"; 					
 				}
-			}//end validateEmail()			
+			}//end validateEmail()		
+				
+			function validateAddress($inAddress)
+			{
+				global $validForm, $addressErrMsg;
+				$addressErrMsg = "";
 			
+				if($inAddress !== "")
+				{
+					echo "Error.  Please resubmit the form.";
+					$validForm = false;
+				}
+			}
 
 		//VALIDATE FORM DATA  using functions defined above
 		$validForm = true;		//switch for keeping track of any form validation errors
@@ -87,37 +113,46 @@ session_start();
 		validateCustomerName($customer_name);
 		validateCustomerPhone($customer_phone);
 		validateEmail($customer_email);		
+		validateAddress($customer_address);
 		
 		if($validForm)
 		{
 			$message = "All good";
 			
-	
+			
+			$_SESSION['name'] = $customer_name;
+			$_SESSION['phone'] = $customer_phone;
+			$_SESSION['email'] = $customer_email;
+			$_SESSION['badge'] = $customer_badge;
+			$_SESSION['meals'] = $customer_meals;
+			$_SESSION['role'] = $customer_role;
+			$_SESSION['email'] = $customer_requests;
+			
 				
 			try {
 		
 				require 'connectPDO.php';	//CONNECT to the database
 		
-				
+				echo "connection is super duper";
 				//mysql DATE stores data in a YYYY-MM-DD format
 				$todaysDate = date("Y-m-d");		//use today's date as the default input to the date( )
-		
+				echo $todaysDate;
 				//Create the SQL command string
-				$sql = "INSERT INTO customers (";
-				$sql .= "customer_name, ";
-				$sql .= "customer_phone, ";
-				$sql .= "customer_email, ";
-				$sql .= "customer_role, ";
-				$sql .= "customer_badge, ";
-				$sql .= "customer_meals, ";
-				$sql .= "customer_requests, ";
-				$sql .= "customer_dateAdded "; //Last column does NOT have a comma after it.
+				$sql = "INSERT INTO CUSTOMERS (";
+				$sql .= "NAME, ";
+				$sql .= "PHONE, ";
+				$sql .= "EMAIL, ";
+				$sql .= "ROLE, ";
+				$sql .= "BADGE, ";
+				$sql .= "MEALS, ";
+				$sql .= "REQUESTS, ";
+				$sql .= "DATEADDED"; //Last column does NOT have a comma after it.
 				$sql .= ") VALUES (:name, :phone, :email, :role, :badge, :meals, :requests, :dateAdded)";
 		
-				
+				echo "INSERT SUCCESS";
 				//PREPARE the SQL statement
 				$stmt = $conn->prepare($sql);
-		
+				echo "connection prepared";
 				//BIND the values to the input parameters of the prepared statement
 				$stmt->bindParam(':name', $customer_name);
 				$stmt->bindParam(':phone', $customer_phone);
@@ -128,12 +163,13 @@ session_start();
 				$stmt->bindParam(':requests', $customer_requests);
 				$stmt->bindParam(':dateAdded', $todaysDate);
 		
-				
+				echo "connection parameterized";
 				
 				//EXECUTE the prepared statement
 				$stmt->execute();
-		
+				echo "executed";
 				$message = "The customer has been registered.";
+				include('results.php');
 			}
 				
 			catch(PDOException $e)
@@ -152,6 +188,7 @@ session_start();
 		else
 		{
 			$message = "Something went wrong";
+			
 		}//ends check for valid form
 		
 		}
@@ -197,7 +234,7 @@ session_start();
 
 
 <div id="orderArea">
-<form name="form3" method="post" action="customerRegistration.php">
+<form name="form3" method="post" id="customer_registration" action="customerRegistration.php">
   <h3>Customer Registration Form</h3>
 
   <?php
@@ -212,6 +249,10 @@ session_start();
 			else	//display form
 			{
         ?>
+        
+        <p>
+        <input type="hidden" name="customer_address" id="textfield">  <?php //HONEYPOT FIELD ?>
+        </p>
   
       <p>
         <label for="textfield">Name:</label>
@@ -232,39 +273,39 @@ session_start();
         <label for="select">Registration: </label>
         <select name="customer_role" id="select">
           <option value="">Choose Type</option>
-          <option value="evt01">Attendee</option>
-          <option value="evt02">Presenter</option>
-          <option value="evt03">Volunteer</option>
-          <option value="evt04">Guest</option>
+          <option <?php if (isset($customer_role) && $customer_role=="Attendee") echo "selected";?>>Attendee</option>
+          <option <?php if (isset($customer_role) && $customer_role=="Presenter") echo "selected";?>>Presenter</option>
+          <option <?php if (isset($customer_role) && $customer_role=="Volunteer") echo "selected";?>>Volunteer</option>
+          <option <?php if (isset($customer_role) && $customer_role=="Guest") echo "selected";?>>Guest</option>
         </select>
       </p>
       <p>Badge Holder:</p>
       <p>
-        <input type="radio" name="customer_badge" id="radio" value="radio">
+        <input type="radio" name="customer_badge" id="radio" value="Clip"<?php echo ($_POST['customer_badge'] == 'Clip' ? 'checked' : '')?>>
         <label for="radio">Clip</label> <br>
-        <input type="radio" name="customer_badge" id="radio2" value="radio2">
+        <input type="radio" name="customer_badge" id="radio2" value="Lanyard"<?php echo ($_POST['customer_badge'] == 'Lanyard' ? 'checked' : '')?>>
         <label for="radio2">Lanyard</label> <br>
-        <input type="radio" name="customer_badge" id="radio3" value="radio3">
+        <input type="radio" name="customer_badge" id="radio3" value="Magnet"<?php echo ($_POST['customer_badge'] == 'Magnet' ? 'checked' : '')?>>
         <label for="radio3">Magnet</label>
       </p>
       <p>Provided Meals (Select all that apply):</p>
       <p>
-        <input type="checkbox" name="customer_meals" id="checkbox">
+        <input type="checkbox" name="customer_meals" id="checkbox" value="Friday Dinner"<?php echo ($_POST['customer_meals'] == 'Friday Dinner' ? 'checked' : '')?>>
         <label for="checkbox">Friday Dinner</label><br>
-        <input type="checkbox" name="customer_meals" id="checkbox2">
+        <input type="checkbox" name="customer_meals" id="checkbox2" value="Saturday Lunch"<?php echo ($_POST['customer_meals'] == 'Saturday Lunch' ? 'checked' : '')?>>
         <label for="checkbox2">Saturday Lunch</label><br>
-        <input type="checkbox" name="customer_meals" id="checkbox3">
+        <input type="checkbox" name="customer_meals" id="checkbox3" value="Sunday Award Brunch"<?php echo ($_POST['customer_meals'] == 'Sunday Award Brunch' ? 'checked' : '')?>>
         <label for="checkbox3">Sunday Award Brunch</label>
       </p>
       <p>
         <label for="textarea">Special Requests/Requirements: (Limit 200 characters)<br>
         </label>
-        <textarea name="textarea" cols="40" rows="5" id="textarea"></textarea>
+        <textarea name="customer_requests" cols="40" rows="5" id="textarea"> <?php echo htmlspecialchars($customer_requests);?></textarea>
       </p>
    
   <p>
     <input type="submit" name="submit" id="submit" value="Submit">
-    <input type="reset" name="btnReset" id="reset" value="Reset" onClick="clearForm(form3)">
+    <input type="reset" name="btnReset" id="reset" value="Reset" onClick="clearForm()">
   </p>
 </form>
 <?php

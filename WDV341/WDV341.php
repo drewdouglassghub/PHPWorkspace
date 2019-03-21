@@ -26,6 +26,7 @@
 			<li><a href="http://drewdouglass.net/WDV341/EmailerTest.php">PHP Emailer Test</a><li>
 			<li><a href="http://drewdouglass.net/WDV341/Form.php">Form Handler</a><li>
 			<li><a href="http://drewdouglass.net/WDV341/customerRegistration.php">Customer Registration</a><li>
+			<li><a href="http://drewdouglass.net/WDV341/FormValidationExample.php">Form Validation Example</a></li>
 		</ul>
 	</nav>
 	

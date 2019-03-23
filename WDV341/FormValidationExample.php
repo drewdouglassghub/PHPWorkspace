@@ -131,9 +131,9 @@ $formValidations = new validations();
 	
 	<h2>Phone Validation</h2>
 	
-	<p>515-222-4555
+	<p>5152224555
 		<?php 
-			if($formValidations->validatePhone("515-222-4555")){
+			if($formValidations->validatePhone("5152224555")){
 				echo "Valid";
 			}else
 			{

@@ -39,7 +39,7 @@
 		
 		public function validatePhone($inPhone)
 		{
-			if(preg_match("/^[0-9]{3}-[0-9]{3}-[0-9]{4}$/", $inPhone)) {
+			if(preg_match("/^[0-9]{10}$/", $inPhone)) {
  					$validForm = true;
  					return  true;
 			}else {
@@ -59,10 +59,18 @@
 				return false;
 			}
 		}
-		
-		
-		
-		
+
+		public function mustBeChecked(){
+				
+		if (empty($_POST["customer_role"])) {
+			$customerRoleErrMsg = "Conference role is required";
+			$validForm = false;
+			return false;
+		} else {
+			$validForm = true;
+			return true;
+		}
+		}		
 	}
 
 ?>

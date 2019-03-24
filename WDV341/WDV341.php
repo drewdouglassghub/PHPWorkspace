@@ -34,6 +34,7 @@
 	<ul>
 		<li><a href="http://drewdouglass.net/WDV341/ConferenceForm.php">Form Validation Example</a></li>
 		<li><a href="http://drewdouglass.net/WDV341/eventsForm.php">Event Creation Form</a></li>
+		<li><a href="http://drewdouglass.net/WDV341/selectEvents.php">Select Events Page</a></li>
 	</ul>
 	
 	</nav>

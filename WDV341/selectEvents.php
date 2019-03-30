@@ -61,7 +61,7 @@ echo "executed";
 			echo "<a href='eventsForm.php'>Add Event</a>";
 			?>
 		
-
+		
 	
 </body>
 </html>

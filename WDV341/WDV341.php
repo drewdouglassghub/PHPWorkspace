@@ -8,7 +8,7 @@
  Author: Drew Douglass
  Date: 1/11/19
 -->
-<title>PHP Homework</title>
+<title>PHP Projects</title>
 <link href="style.css" rel="stylesheet" style="text/css"/>
 </head>
 <body>
@@ -37,6 +37,7 @@
 		<li><a href="http://drewdouglass.net/WDV341/selectEvents.php">Select Events Page</a></li>
 		<li><a href="http://drewdouglass.net/WDV341/selectOneEvent.php">Select One Event</a></li>
 		<li><a href="http://drewdouglass.net/WDV341/formatEvents.php">Events Formatted</a></li>
+		<li><a href="http://drewdouglass.net/WDV341/presenterLogin.php">Presenter Login</a></li>
 	</ul>
 	
 	</nav>

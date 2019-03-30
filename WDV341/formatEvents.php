@@ -61,9 +61,7 @@ echo "executed";
 			$date = explode('/', $row['EVENT_DATE']);
 			$year = $date[2];
 			$month = $date[0];
-			echo $month;
-			echo $year;
-			echo date("m");
+
 			
            if ($month == date("m")){
            	

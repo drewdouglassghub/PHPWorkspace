@@ -33,8 +33,9 @@ $event_time = $_SESSION['time'];
 	<td><?php echo $event_date ?></td>
 	<td><?php echo $event_time ?></td>
 </tr>
-
 </table>
+
+	<a href="selectEvents.php">Event List</a>
 
 </body>
 </html>

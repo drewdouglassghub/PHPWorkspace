@@ -132,7 +132,7 @@ session_start();
 			$_SESSION['badge'] = $customer_badge;
 			$_SESSION['meals'] = $customer_meals;
 			$_SESSION['role'] = $customer_role;
-			$_SESSION['email'] = $customer_requests;
+			$_SESSION['requests'] = $customer_requests;
 			
 				
 			try {

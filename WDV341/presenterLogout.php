@@ -4,9 +4,8 @@ session_start();
 $currentUser = ($_SESSION['currentUser']);
 $logOutMessage = "";
 
-if(($_SESSION['validUser']) == "no")
+if(($_SESSION['validUser']) != "yes")
 {
-
 	header("Location:presenterLogin.php");
 }
 
@@ -19,16 +18,24 @@ if(isset($_GET['submit']))
 	exit;
 }
 
+if(isset($_GET['cancel']))
+		{
+			header("Location:presenterLogin.php");
+		}
+
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Presenter Logout</title>
+<title>Logout</title>
 <link href="style.css" rel="stylesheet" style="text/css"/>
 </head>
 <body>
-
+</br>
+</br>
+</br>
+</br>
 	<div class="container">
 	<h2>
 		<?php echo $currentUser ?>
@@ -39,7 +46,7 @@ if(isset($_GET['submit']))
 	</p>
 	<form action="presenterLogout.php" method="get">
 		<input type="submit" name="submit" id="submit" value="Logout" onclick="logout()" class="button"/> 
-		<input type="button" name="cancel" id="cancel" value="Cancel" class="button"/>
+		<input type="submit" name="cancel" id="cancel" value="Cancel" class="button"/>
 	</form>
 	</div>
 	

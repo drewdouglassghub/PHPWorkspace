@@ -5,16 +5,22 @@ $formValidations = new validations();
 session_cache_limiter('none');			//This prevents a Chrome error when using the back button to return to this page.
 session_start();
 
-	$loginErrMessage = "";
+	$loginErrMessage = "Invalid user name or password";
 	$clearMsg = "";
-	$loginID = "Drew";
-	$PassWord = "password";
+	$loginID = "wdv341";
+	$PassWord = "wdv341";
 
 	if (isset($_SESSION['validUser']) && ($_SESSION['validUser'] == "yes"))
 		{
 		
 			$message = "Login successful";
 		}
+		
+		if (isset($_POST['reset']))
+		{
+			$loginErrMessage = " ";
+		}
+		
 		
 		if (isset($_POST['submitLogin']) )
 		{
@@ -23,7 +29,7 @@ session_start();
 		
 		
 		
-		$sql = "SELECT username, password FROM wdv_userReg WHERE username = :userName AND password = :passWord";
+		$sql = "SELECT username, password FROM event_user WHERE username = :userName AND password = :passWord";
 		$stmt = $conn->prepare($sql);//prepare the query
 		
 		
@@ -35,49 +41,35 @@ session_start();
 		$userRow = $stmt->fetch(PDO::FETCH_ASSOC);
 		
 		
-		if ($userRow != "")
-		{
-		$_SESSION['loginUserName'] = $inUsername;
-		$_SESSION['validUser'] = "yes";
-		$message = "Login successful.  Welcome back " . $inUsername;
-		$_SESSION['currentUser'] = $inUsername;
+			if ($userRow != "")
+			{
+				$_SESSION['loginUserName'] = $inUsername;
+				$_SESSION['validUser'] = "yes";
+				$message = "Login successful.  Welcome back " . $inUsername;
+				$_SESSION['currentUser'] = $inUsername;
+	
+			}
+			else
+			{
+				//error in processing login.  Logon Not Found...
+				$_SESSION['validUser'] = "no";
+				$message = "Sorry, there was a problem with your username or password. Please try again.";
+			}
 
-		}
-		else
-		{
-		//error in processing login.  Logon Not Found...
-		$_SESSION['validUser'] = "no";
-		$message = "Sorry, there was a problem with your username or password. Please try again.";
-		}
-																																																													
 		}//end if submitted
 		else
 		{
 				
 		
 		}//end else submitted
-		
-		function clearForm()
-		{
-		$clearMsg = "clear";
-		$customer_name = "";
-		$customer_phone = "";
-		$customer_email = "";
-		$customer_role = "";
-		$customer_badge = "";
-			$customer_meals = "";
-			$customer_requests = "";
-			$loginErrMessage = "";
-		
-			}
-			
+
 		
 ?>
 <!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>WDV341 Intro PHP - Login and Control Page</title>
+<title>Event Admin Login</title>
 
 <!--  User Login Page
             
@@ -103,7 +95,7 @@ else
 
 <body >
 
-<header>Presenters Admin System Example</header>
+<header>Events Admin System Example</header>
 
 <div class="info">
 <h3><?php echo $message?></h3>
@@ -118,10 +110,10 @@ else
 //turn off PHP and turn on HTML
 ?>
 	<div class="container">
-		<h3 id="info">Presenters Administrator Options</h3>
-        <p><a href="presentersInsertForm.php" class="link">Input New Presenter</a></p>
-        <p><a href="presentersSelectView.php" class="link">List of Presenters</a></p>
-        <p><a href="presenterLogout.php" class="link">Logout of Presenters Admin System</a></p>	
+		<h3 id="info">Events Administrator Options</h3>
+        <p><a href="insertEvent.php" class="link">Input New Event</a></p>
+        <p><a href="presentersSelectView.php" class="link">List of Events</a></p>
+        <p><a href="presenterLogout.php" class="link">Logout of Events Admin System</a></p>	
       </div>  					
 <?php
 	}
@@ -135,11 +127,11 @@ else
 				<h3>Password: <?php echo $PassWord; ?></h3>
                 <form method="post" name="loginForm" action="presenterLogin.php" >
                <p>Username: <input name="loginUsername" type="text" />
-               <span class="errMsg" style= "font-weight:bold; color: red"> <?php if(isset($_POST['loginUsername'])) {echo $loginErrMessage;} ?></span>
+               <span class="errMsg" > <?php if(isset($_POST['loginUsername'])) {echo $loginErrMessage;} ?></span>
                </p>
                   <p>Password: <input name="loginPassword" type="password" />
-                    <span class="errMsg" style= "font-weight:bold; color: red"> <?php echo $loginErrMessage; ?></span></p>
-                  <p><input name="submitLogin" id="submitLogin" value="Login" type="submit" class="button"/> <input type="reset" name="btnReset" id="reset" value="Reset" onClick="clearForm()" class="button">&nbsp;</p>
+                    <span class="errMsg" > <?php if(isset($_POST['loginPassword'])) {echo $loginErrMessage;} ?></span></p>
+                  <p><input name="submitLogin" id="submitLogin" value="Login" type="submit" class="button"/> <input type="reset" name="reset" id="reset" value="Reset" class="button">&nbsp;</p>
                 </form>
               </div>  
 <?php //turn off HTML and turn on PHP

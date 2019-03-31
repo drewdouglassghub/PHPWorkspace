@@ -1,5 +1,11 @@
 <?php 
 session_start();
+
+if(($_SESSION['validUser']) != "yes")
+{
+	header("Location:presenterLogin.php");
+}
+else{
 	$event_id = "";
 	$event_name = "";
 	$event_description = "";
@@ -18,6 +24,10 @@ session_start();
 	
 
 	$validForm = false;
+	
+	if(isset($_POST['reset'])){
+		
+	}
 	
 	if(isset($_POST["submit"]))
 	{	
@@ -158,37 +168,23 @@ session_start();
 		{
 			//Form has not been seen by the user.  display the form
 		}// ends if submit
+	}
 		?>
 <!DOCTYPE html>
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Event Form</title>
-<style>
-
-#orderArea	{
-	width:600px;
-	border:thin solid black;
-	margin: auto auto;
-	padding-left: 20px;
-}
-
-#orderArea h3	{
-	text-align:center;	
-}
-.error	{
-	color:red;
-	font-style:italic;	
-}
-
-</style>
+<link href="style.css" rel="stylesheet" style="text/css"/>
 </head>
 <body>
 <p>&nbsp;</p>
 
-<div id="eventArea">
+<header>Event Registration Form</header>
+
+<div class="container">
 <form name="form1" method="post" id="event_creation" action="eventsForm.php">
-  <h3>Event Registration Form</h3>
+  
 
   <?php
             //If the form was submitted and valid and properly put into database display the INSERT result message
@@ -235,8 +231,8 @@ session_start();
       </p>
    
   <p>
-    <input type="submit" name="submit" id="submit" value="Submit">
-    <input type="reset" name="btnReset" id="reset" value="Reset" onClick="clearForm()">
+    <input type="submit" name="submit" id="submit" value="Submit" class="button">
+    <input type="reset" name="btnReset" id="reset" value="Reset" class="button">
   </p>
 </form>
 <?php

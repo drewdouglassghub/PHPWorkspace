@@ -1,4 +1,8 @@
 <?php 
+include('FormValidation.php');
+include 'connectPDO2.php';
+$formValidations = new validations();
+session_cache_limiter('none');
 session_start();
 
 if(($_SESSION['validUser']) != "yes")
@@ -114,8 +118,6 @@ else{
 				
 			try {
 		
-				require 'connectPDO2.php';	//CONNECT to the database
-		
 				echo "connection is super duper";
 				//mysql DATE stores data in a YYYY-MM-DD format
 				$todaysDate = date("Y-m-d");		//use today's date as the default input to the date( )
@@ -145,7 +147,7 @@ else{
 				//EXECUTE the prepared statement
 				$stmt->execute();
 				echo "executed";
-				$message = "The customer has been registered.";
+				$message = "The event has been created.";
 				include('eventResults.php');
 			}
 				
@@ -183,9 +185,8 @@ else{
 <header>Event Registration Form</header>
 
 <div class="container">
-<form name="form1" method="post" id="event_creation" action="eventsForm.php">
-  
-
+<h2 style="text-align:left; margin-left:2em;">Create your event:</h2>
+<form name="form1" method="post" id="event_creation" action="insertEvent.php">
   <?php
             //If the form was submitted and valid and properly put into database display the INSERT result message
 			if($validForm)

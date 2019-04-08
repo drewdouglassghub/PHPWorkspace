@@ -35,7 +35,8 @@ body {
 }
 
 .container {
-	width: 65%;
+	margin-top: 2em;
+	width: 55%;
 	margin-left: auto;
 	margin-right: auto;
 	border-width: 2px;
@@ -44,6 +45,18 @@ body {
 	text-align: center;
 	border-radius: 10px;
 	font-size: 20px;
+}
+
+.container2 {
+	width: 30em;
+	margin-left: auto;
+	margin-right: auto;
+	border-width: 2px;
+	border-style: solid;
+	border-color: 0000FF;
+	text-align: center;
+	border-radius: 10px;
+	font-size: 30px;
 }
 
 #left {
@@ -69,7 +82,11 @@ body {
 	font-style:italic;	
 }
 	
-	
+#formHeader {
+	text-align: left;
+	margin-left: 1em;
+}	
+
 nav {
 	background: linear-gradient(to right bottom, #6666ff, #00004d	);
 	width: 11em;

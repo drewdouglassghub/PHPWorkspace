@@ -112,7 +112,7 @@ else
 	<div class="container">
 		<h3 id="info">Events Administrator Options</h3>
         <p><a href="insertEvent.php" class="link">Input New Event</a></p>
-        <p><a href="presentersSelectView.php" class="link">List of Events</a></p>
+        <p><a href="selectEvents.php" class="link">List of Events</a></p>
         <p><a href="presenterLogout.php" class="link">Logout of Events Admin System</a></p>	
       </div>  					
 <?php
@@ -142,7 +142,7 @@ else
 //turn off PHP and begin HTML			
 ?>
 
-<p>Return to <a href='#'>www.presentationstogo.com</a></p>
+<p>Return to <a href='#'>www.drewdouglass.net</a></p>
 
 </body>
 </html>

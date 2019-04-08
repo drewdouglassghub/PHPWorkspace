@@ -1,8 +1,17 @@
 <?php
 include 'connectPDO2.php';
+session_start();
 $stmt = $conn->prepare("SELECT EVENT_ID, EVENT_NAME, EVENT_DESCRIPTION, EVENT_PRESENTER, EVENT_DATE, EVENT_TIME FROM WDV_EVENT");
 $stmt->execute();
 echo "executed";
+
+if(($_SESSION['validUser']) != "yes")
+{
+	header("Location:presenterLogin.php");
+}
+else{
+
+}
 
 ?>
 <!DOCTYPE html>
@@ -27,9 +36,11 @@ echo "executed";
 	margin-left: 100px;
 }
 </style>
+<link href="style.css" rel="stylesheet" style="text/css"/>
 </head>
 <body>
-	<h1>Event Schedule</h1>
+	<header>Event Schedule</header>
+	<div class="container2">
 	<table border='1'>
 		<tr>
 			<td>ID</td>
@@ -50,18 +61,24 @@ echo "executed";
 				echo "<td>" . $row['EVENT_PRESENTER'] . "</td>";
 				echo "<td>" . $row['EVENT_DATE'] . "</td>";
 				echo "<td>" . $row['EVENT_TIME'] . "</td>";
+				echo "<td><a href='updateEvent.php?eventID=" . $row['EVENT_ID'] . "'>Update</a></td>";
+				echo "<td><a href='deleteEvent.php?eventID=" . $row['EVENT_ID'] . "'>Delete</a></td>";
 				echo "</tr>";
 			}
 			?>
 			</table>
+			</div>
 			
+			<div class="container">
 			<?php 
+			
 			echo "<h1>No additional events currently scheduled.</h1>";
 			echo "<h3>You may add an event here: </h3>";
-			echo "<a href='eventsForm.php'>Add Event</a>";
+			echo "<a href='insertEvent.php'>Add Event</a>";
+
 			?>
 		
-		
+		</div>
 	
 </body>
 </html>

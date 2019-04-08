@@ -1,23 +1,31 @@
 <?php
+session_cache_limiter('none');
+session_start();
+include 'connectPDO2.php';
 
-$event_name = $_SESSION['name'];
-$event_description = $_SESSION['description'];
-$event_presenter = $_SESSION['presenter'];
-$event_date = $_SESSION['date'];
-$event_time = $_SESSION['time'];
+echo "Events Results Page: ";
+$eventId = $_POST['event_id'];
+echo $eventId;
+$sql = ("SELECT EVENT_ID, EVENT_NAME, EVENT_DESCRIPTION, EVENT_PRESENTER, EVENT_DATE, EVENT_TIME FROM WDV_EVENT WHERE EVENT_ID = '$eventId'");
 
+
+$stmt=$conn->prepare($sql);
+$stmt->execute();
 
 ?>
 <!DOCTYPE html>
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+	<link href="style.css" rel="stylesheet" style="text/css" />
 <title>Event Creation Results</title>
 </head>
 <body>
 
-<h1>Event Created</h1>
+<header>Event Updated</header>
 
+<div class="container">
 <table>
 <tr>
 	<th>Name</th>
@@ -36,6 +44,6 @@ $event_time = $_SESSION['time'];
 </table>
 
 	<a href="selectEvents.php">Event List</a>
-
+</div>
 </body>
 </html>

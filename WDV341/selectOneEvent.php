@@ -1,5 +1,6 @@
 <?php
 include 'connectPDO2.php';
+session_start();
 $stmt = $conn->prepare("SELECT EVENT_ID, EVENT_NAME, EVENT_DESCRIPTION, EVENT_PRESENTER, EVENT_DATE, EVENT_TIME FROM WDV_EVENT WHERE EVENT_ID = 23");
 $stmt->execute();
 echo "executed";

@@ -5,6 +5,9 @@ $servername = "localhost";
 			$username = "*****341";
 			$password = "******";
 			$dbname = "*******";
+			$username = "****341";
+			$password = "****";
+			$dbname = "*****";
 			
 				try {
 					$conn = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);

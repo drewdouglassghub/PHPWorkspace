@@ -4,9 +4,10 @@ include 'connectPDO2.php';
 $formValidations = new validations();
 session_cache_limiter('none');
 session_start();
+
 if(($_SESSION['validUser']) != "yes")
 {
-	header("Location:presenterLogin.php");
+	header("Location:banditIndex.php");
 }
 else{
 	$event_id = "";
@@ -25,6 +26,7 @@ else{
 	$eventTimeErrMsg = "";
 	$eventAddressErrMsg = "";
 	
+
 	$validForm = false;
 	
 	if(isset($_POST['reset'])){
@@ -92,6 +94,7 @@ else{
 				return false;
 			}
 		}
+
 		//VALIDATE FORM DATA  using functions defined above
 		$validForm = true;		//switch for keeping track of any form validation errors
 		
@@ -145,7 +148,7 @@ else{
 				$stmt->execute();
 				echo "executed";
 				$message = "The event has been created.";
-				include('newEventResults.php');
+				include('eventResults.php');
 			}
 				
 			catch(PDOException $e)
@@ -183,7 +186,7 @@ else{
 
 <div class="container">
 <h2 style="text-align:left; margin-left:2em;">Create your event:</h2>
-<form name="form1" method="post" id="event_creation" action="insertEvent.php">
+<form name="form1" method="post" id="show_creation" action="venueInsertShow.php">
   <?php
             //If the form was submitted and valid and properly put into database display the INSERT result message
 			if($validForm)

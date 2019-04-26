@@ -1,6 +1,5 @@
 <?php
 include 'connectPDO2.php';
-session_start();
 $stmt = $conn->prepare("SELECT EVENT_ID, EVENT_NAME, EVENT_DESCRIPTION, EVENT_PRESENTER, EVENT_DATE, EVENT_TIME FROM WDV_EVENT WHERE EVENT_ID = 23");
 $stmt->execute();
 echo "executed";
@@ -8,6 +7,7 @@ echo "executed";
 <!DOCTYPE html>
 <html>
 <head>
+<link href="style.css" rel="stylesheet" style="text/css"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Select One Event</title>
 <style>
@@ -59,6 +59,8 @@ echo "executed";
 			echo "<h3>You may add an event here: </h3>";
 			echo "<a href='eventsForm.php'>Add Event</a>";
 			?>
+		
+
 	
 </body>
 </html>

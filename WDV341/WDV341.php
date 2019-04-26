@@ -33,11 +33,12 @@
 	<nav id="center">
 	<ul>
 		<li><a href="http://drewdouglass.net/WDV341/ConferenceForm.php">Form Validation Example</a></li>
-		<li><a href="http://drewdouglass.net/WDV341/insertEvent.php">Event Creation Form</a></li>
+		<li><a href="http://drewdouglass.net/WDV341/eventsForm.php">Event Creation Form</a></li>
 		<li><a href="http://drewdouglass.net/WDV341/selectEvents.php">Select Events Page</a></li>
 		<li><a href="http://drewdouglass.net/WDV341/selectOneEvent.php">Select One Event</a></li>
 		<li><a href="http://drewdouglass.net/WDV341/formatEvents.php">Events Formatted</a></li>
 		<li><a href="http://drewdouglass.net/WDV341/presenterLogin.php">Presenter Login</a></li>
+		<li><a href="http://drewdouglass.net/WDV341/banditIndex.php">BandIt - Final Project</a></li>
 	</ul>
 	
 	</nav>

@@ -1,8 +1,10 @@
 <?php 
+session_start();
+
+
 include("FormValidation.php");
 $formValidations = new validations();
 
-session_start();
 	$customer_id = "";
 	$customer_name = "";
 	$customer_phone="";
@@ -25,13 +27,10 @@ session_start();
 
 	$validForm = false;
 	
-	if(isset($_POST["submit"]))
+	if(isset($_POST['submit']))
 	{	
-		//The form has been submitted and needs to be processed
-		
-		
-		//Validate the form data here!
-	
+		//The form has been submitted and needs to be processed	
+		//Validate the form data here!	
 		//Get the name value pairs from the $_POST variable into PHP variables
 		//This example uses PHP variables with the same name as the name atribute from the HTML form
 		$customer_id = $_POST['customer_id'];
@@ -44,6 +43,7 @@ session_start();
 		$customer_requests = $_POST['customer_requests'];
 		$customer_address = $_POST['customer_address'];
 		
+	
 		
 	function clearForm()
 	{
@@ -56,71 +56,20 @@ session_start();
 		$customer_requests = "";
 	}
 		
-	/*function validateCustomerName($inName)
-			{
-				global $validForm, $customerNameErrMsg;		//Use the GLOBAL Version of these variables instead of making them local
-				$customerNameErrMsg = "";
-				
-				if($inName == "")
-				{
-					$validForm = false;
-					$customerNameErrMsg = "Name cannot be spaces";
-				}
-			}//end validateName()
 
-			function validateCustomerPhone($inPhone)
-			{
-				global $validForm, $customerPhoneErrMsg;		//Use the GLOBAL Version of these variables instead of making them local
-				$customerPhoneErrMsg = "";
-				
-				if(!preg_match("/^[0-9]{3}[0-9]{3}[0-9]{4}$/", $inPhone))
-					 {
-						$validForm = false;
-						$customerPhoneErrMsg = "Invalid phone number"; 
-					 }		
-			}//end validatePhone()			
-					
-			function validateEmail($inEmail)
-			{
-				global $validForm, $customerEmailErrMsg;			//Use the GLOBAL Version of these variables instead of making them local
-				$customerEmailErrMsg = "";							//Clear the error message. 
-				
-				// Remove all illegal characters from email
-				$inEmail = filter_var($inEmail, FILTER_SANITIZE_EMAIL);
+	//VALIDATE FORM DATA  using functions defined above
+	$validForm = true;		//switch for keeping track of any form validation errors
 
-				// Validate e-mail
-				$inEmail = filter_var($inEmail, FILTER_VALIDATE_EMAIL);
-
-				if($inEmail === false)
-				{
-					$validForm = false;
-					$customerEmailErrMsg = "Invalid email"; 					
-				}
-			}//end validateEmail()		
-				
-			function validateAddress($inAddress)
-			{
-				global $validForm, $addressErrMsg;
-				$addressErrMsg = "";
-			
-				if($inAddress !== "")
-				{
-					echo "Error.  Please resubmit the form.";
-					$validForm = false;
-				}
-			}
-
-		//VALIDATE FORM DATA  using functions defined above
-		$validForm = true;		//switch for keeping track of any form validation errors
-		
-		validateCustomerName($customer_name);
-		validateCustomerPhone($customer_phone);
-		validateEmail($customer_email);		
-		validateAddress($customer_address);*/
-		
-	$formValidations->cannotBeEmpty($POST["customer_role"]);
-	$formValidations->cannotBeEmpty($POST["customer_badge"]);
-
+	$formValidations->validateNameStringChars($customer_name);
+	$formValidations->validateAddress($customer_address);
+	$formValidations->validateRequestStringChars($customer_requests);
+	$formValidations->cannotBeEmpty($customer_name);
+	$formValidations->validatePhone($customer_phone);
+	$formValidations->validateEmail($customer_email);
+	$formValidations->mustBeCheckedRole($customer_role);
+	$formValidations->mustBeCheckedBadge($customer_badge);
+	$formValidations->checkRequestLength($customer_requests);
+	
 		if($validForm)
 		{
 			$message = "All good";
@@ -138,11 +87,9 @@ session_start();
 			try {
 		
 				require 'connectPDO.php';	//CONNECT to the database
-		
-				echo "connection is super duper";
+
 				//mysql DATE stores data in a YYYY-MM-DD format
 				$todaysDate = date("Y-m-d");		//use today's date as the default input to the date( )
-				echo $todaysDate;
 				//Create the SQL command string
 				$sql = "INSERT INTO CUSTOMERS (";
 				$sql .= "NAME, ";
@@ -155,10 +102,9 @@ session_start();
 				$sql .= "DATEADDED"; //Last column does NOT have a comma after it.
 				$sql .= ") VALUES (:name, :phone, :email, :role, :badge, :meals, :requests, :dateAdded)";
 		
-				echo "INSERT SUCCESS";
 				//PREPARE the SQL statement
 				$stmt = $conn->prepare($sql);
-				echo "connection prepared";
+
 				//BIND the values to the input parameters of the prepared statement
 				$stmt->bindParam(':name', $customer_name);
 				$stmt->bindParam(':phone', $customer_phone);
@@ -169,7 +115,6 @@ session_start();
 				$stmt->bindParam(':requests', $customer_requests);
 				$stmt->bindParam(':dateAdded', $todaysDate);
 		
-				echo "connection parameterized";
 				
 				//EXECUTE the prepared statement
 				$stmt->execute();
@@ -187,7 +132,7 @@ session_start();
 					
 				//Clean up any variables or connections that have been left hanging by this error.
 					
-				//header('Location: files/505_error_response_page.php');	//sends control to a User friendly page
+				header('Location: ConferenceForm.php');	//sends control to a User friendly page
 			}
 		
 		}
@@ -222,7 +167,7 @@ session_start();
 #orderArea h3	{
 	text-align:center;	
 }
-.error	{
+.errMsg	{
 	color:red;
 	font-style:italic;	
 }
@@ -240,7 +185,7 @@ session_start();
 
 
 <div id="orderArea">
-<form name="form3" method="post" id="customer_registration" action="customerRegistration.php">
+<form name="form3" method="post" id="customer_registration" action="ConferenceForm.php">
   <h3>Customer Registration Form</h3>
 
   <?php
@@ -309,6 +254,7 @@ session_start();
         <label for="textarea">Special Requests/Requirements: (Limit 200 characters)<br>
         </label>
         <textarea name="customer_requests" cols="40" rows="5" id="textarea"> <?php echo htmlspecialchars($customer_requests);?></textarea>
+          <span class="errMsg"> <?php echo $customerRequestsErrMsg; ?></span>
       </p>
    
   <p>

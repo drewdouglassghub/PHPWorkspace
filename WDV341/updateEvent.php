@@ -4,14 +4,9 @@ include 'connectPDO2.php';
 $formValidations = new validations();
 session_cache_limiter('none');
 session_start();
-
 $eventId = $_GET['eventID'];
-
 $stmt = $conn->prepare("SELECT EVENT_ID, EVENT_NAME, EVENT_DESCRIPTION, EVENT_PRESENTER, EVENT_DATE, EVENT_TIME FROM WDV_EVENT WHERE EVENT_ID = '$eventId'");
 $stmt->execute();
-
-
-
 if(($_SESSION['validUser']) != "yes")
 {
 	header("Location:presenterLogin.php");
@@ -24,7 +19,6 @@ else{
 	$event_date = "";
 	$event_time = "";
 	$event_address = "";
-
 	$eventIdErrMsg = "";
 	$eventFieldErrMsg = "";
 	$eventDescriptionErrMsg = "";
@@ -32,16 +26,11 @@ else{
 	$eventDateErrMsg = "";
 	$eventTimeErrMsg = "";
 	$eventAddressErrMsg = "";
-
 	$validForm = false;
-
 	if(isset($_POST["submit"]))
 	{
 		//The form has been submitted and needs to be processed
-
-
 		//Validate the form data here!
-
 		//Get the name value pairs from the $_POST variable into PHP variables
 		//This example uses PHP variables with the same name as the name atribute from the HTML form
 		
@@ -51,8 +40,6 @@ else{
 		$event_date = $_POST['event_date'];
 		$event_time = $_POST['event_time'];
 		$event_address = $_POST['event_address'];
-
-
 		function clearForm()
 		{
 			$event_name = "";
@@ -61,25 +48,20 @@ else{
 			$event_date = "";
 			$event_time = "";
 		}
-
 		function validateMustBeFilled($inValue)
 		{
 			global $validForm, $eventFieldErrMsg;		//Use the GLOBAL Version of these variables instead of making them local
 			$eventNameErrMsg = "";
-
 			if($inValue == "")
 			{
 				$validForm = false;
 				$eventFieldErrMsg = "Field must be completed.";
 			}
 		}//end validateName()
-
-
 		function validateAddress($inAddress)
 		{
 			global $validForm, $eventAddressErrMsg;
 			$eventAddressErrMsg = "";
-
 			if($inAddress !== "")
 			{
 				echo "Error.  Please resubmit the form.";
@@ -96,28 +78,20 @@ else{
 				return false;
 			}
 		}
-
 		//VALIDATE FORM DATA  using functions defined above
 		$validForm = true;		//switch for keeping track of any form validation errors
-
 		validateMustBeFilled($event_name);
 		validateMustBeFilled($event_description);
 		validateMustBeFilled($event_presenter);
 		validateDate($event_date);
 		validateAddress($event_address);
-
 		if($validForm)
 		{
 			$message = "";
-
 			echo "valid";
-
 			echo $event_id;
-
 			try {
-
 				require 'connectPDO2.php';	//CONNECT to the database
-
 				
 				$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 				//mysql DATE stores data in a YYYY-MM-DD format
@@ -139,31 +113,25 @@ else{
 				$stmtu->bindParam(':description', $event_description);
 					
 				echo "connection parameterized";
-
 				//EXECUTE the prepared statement
 				$stmtu->execute($sqlu);
 				echo "executed";
-				include 'eventResults.php';
+				include 'newEventResults.php';
 				
 	
 			}
-
 			catch(PDOException $e)
 			{
 				$message = "There has been a problem. The system administrator has been contacted. Please try again later.";
 				error_log($e->getMessage());
 				error_log($e->getLine());
 				error_log(var_dump(debug_backtrace()));
-
 			}
-
 		}
 		else
 		{
 			$message = "Something went wrong";
-
 		}//ends check for valid form
-
 	}
 	else
 	{
@@ -194,12 +162,10 @@ else{
 	margin-right: auto;
 	background-color: #CCC;
 }
-
 .displayEvent {
 	text_align: left;
 	font-size: 18px;
 }
-
 .displayDescription {
 	margin-left: 100px;
 }
@@ -279,7 +245,6 @@ else{
 			</p>
 		</form>
 		<?php
-
 			}//end else
 			?>
 

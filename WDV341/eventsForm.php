@@ -1,14 +1,5 @@
 <?php 
-include('FormValidation.php');
-include 'connectPDO2.php';
-$formValidations = new validations();
-session_cache_limiter('none');
 session_start();
-if(($_SESSION['validUser']) != "yes")
-{
-	header("Location:presenterLogin.php");
-}
-else{
 	$event_id = "";
 	$event_name = "";
 	$event_description = "";
@@ -25,11 +16,8 @@ else{
 	$eventTimeErrMsg = "";
 	$eventAddressErrMsg = "";
 	
+
 	$validForm = false;
-	
-	if(isset($_POST['reset'])){
-		
-	}
 	
 	if(isset($_POST["submit"]))
 	{	
@@ -92,6 +80,7 @@ else{
 				return false;
 			}
 		}
+
 		//VALIDATE FORM DATA  using functions defined above
 		$validForm = true;		//switch for keeping track of any form validation errors
 		
@@ -114,6 +103,8 @@ else{
 			$_SESSION['address'] = $event_address;
 				
 			try {
+		
+				require 'connectPDO2.php';	//CONNECT to the database
 		
 				echo "connection is super duper";
 				//mysql DATE stores data in a YYYY-MM-DD format
@@ -144,7 +135,7 @@ else{
 				//EXECUTE the prepared statement
 				$stmt->execute();
 				echo "executed";
-				$message = "The event has been created.";
+				$message = "The customer has been registered.";
 				include('newEventResults.php');
 			}
 				
@@ -167,23 +158,39 @@ else{
 		{
 			//Form has not been seen by the user.  display the form
 		}// ends if submit
-	}
 		?>
 <!DOCTYPE html>
 <html >
 <head>
+<link href="style.css" rel="stylesheet" style="text/css"/>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Event Form</title>
-<link href="style.css" rel="stylesheet" style="text/css"/>
+<style>
+
+#orderArea	{
+	width:600px;
+	border:thin solid black;
+	margin: auto auto;
+	padding-left: 20px;
+}
+
+#orderArea h3	{
+	text-align:center;	
+}
+.error	{
+	color:red;
+	font-style:italic;	
+}
+
+</style>
 </head>
 <body>
 <p>&nbsp;</p>
 
-<header>Event Registration Form</header>
+<div id="eventArea">
+<form name="form1" method="post" id="event_creation" action="eventsForm.php">
+  <h3>Event Registration Form</h3>
 
-<div class="container">
-<h2 style="text-align:left; margin-left:2em;">Create your event:</h2>
-<form name="form1" method="post" id="event_creation" action="insertEvent.php">
   <?php
             //If the form was submitted and valid and properly put into database display the INSERT result message
 			if($validForm)
@@ -229,8 +236,8 @@ else{
       </p>
    
   <p>
-    <input type="submit" name="submit" id="submit" value="Submit" class="button">
-    <input type="reset" name="btnReset" id="reset" value="Reset" class="button">
+    <input type="submit" name="submit" id="submit" value="Submit">
+    <input type="reset" name="btnReset" id="reset" value="Reset" onClick="clearForm()">
   </p>
 </form>
 <?php

@@ -1,16 +1,34 @@
 <?php
 session_cache_limiter('none');
 session_start();
-include 'connectPDO2.php';
+//include 'connectPDOBANDIT.php';
+if(isset($_SESSION['validUser']) && ($_SESSION['validUser'] !== "YES"))
+{
+	header("Location:banditIndex.php");
+}
+else{
+			
+			$event_name = $_SESSION['name'];
+			$event_description = $_SESSION['description'];
+			$event_userid = $_SESSION['userid'];
+			$event_date = $_SESSION['date'];
+			$event_time = $_SESSION['time'];		
+			$band_id = $_SESSION['bandId'];
+			$user_name = $_SESSION['userName'];
+			$user_auth = $_SESSION['userAuth'];
+			$user_id = $_SESSION['userId'];
+			$venue_id = 1;
 
-echo "Events Results Page: ";
-$eventId = $_POST['event_id'];
-echo $eventId;
-$sql = ("SELECT EVENT_ID, EVENT_NAME, EVENT_DESCRIPTION, EVENT_PRESENTER, EVENT_DATE, EVENT_TIME FROM WDV_EVENT WHERE EVENT_ID = '$eventId'");
+}
+
+//$sql = ("SELECT EVENT_ID, EVENT_NAME, EVENT_DESCRIPTION, EVENT_USERID, EVENT_DATE, EVENT_TIME FROM BANDIT_EVENT WHERE EVENT_ID = '$eventId'");
 
 
-$stmt=$conn->prepare($sql);
-$stmt->execute();
+	
+	
+	
+//$stmt=$conn->prepare($sql);
+//$stmt->execute();
 
 ?>
 <!DOCTYPE html>
@@ -30,20 +48,27 @@ $stmt->execute();
 <tr>
 	<th>Name</th>
 	<th>Description</th>
-	<th>Presenter</th>
+	<th>User</th>
+	<th>Band</th>
+	<th>Venue</th>
 	<th>Date</th>
 	<th>Time</th>
+
 </tr>
 <tr>
 	<td><?php echo $event_name ?></td>
 	<td><?php echo $event_description ?></td>
-	<td><?php echo $event_presenter ?></td>
+     <td><?php echo $event_userid ?></td>
+     <td><?php echo $band_id ?></td>
+	<td><?php echo $event_venueid ?></td>
 	<td><?php echo $event_date ?></td>
 	<td><?php echo $event_time ?></td>
+	
+	
 </tr>
 </table>
 
-	<a href="selectEvents.php">Event List</a>
+	<a href="selectBandEvents.php">Event List</a>
 </div>
 </body>
 </html>

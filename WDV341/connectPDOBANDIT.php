@@ -1,6 +1,6 @@
 <?php 
 
-$servername = "localhost";
+			$servername = "localhost";
 			$username = "walrusdodges_341";
 			$password = "Dougl@ss73";
 			$dbname = "walrusdodges_341";
@@ -17,3 +17,4 @@ $servername = "localhost";
 				}
 
 ?>
+

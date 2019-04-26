@@ -8,6 +8,7 @@ echo "executed";
 <!DOCTYPE html>
 <html>
 <head>
+<link href="style.css" rel="stylesheet" style="text/css" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>WDV341 Intro PHP  - Display Events Example</title>
     <style>
@@ -16,6 +17,7 @@ echo "executed";
 			margin-left:auto;
 			margin-right:auto;
 			background-color:#CCC;	
+			color: black;
 		}
 		
 		.displayPresenter{
@@ -55,13 +57,18 @@ echo "executed";
 <?php
 	while ($row = $stmt->fetch(PDO::FETCH_ASSOC))
 	{
+	
+
 	echo "<p>
         <div class='eventBlock'>	
             <div>";
 			$date = explode('/', $row['EVENT_DATE']);
+			
 			$year = $date[2];
 			$month = $date[0];
-
+			
+			echo "year: " . $year;
+			echo "month: " . $month;
 			
            if ($month == date("m")){
            	

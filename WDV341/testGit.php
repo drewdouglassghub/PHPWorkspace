@@ -2,7 +2,7 @@
 <meta charset = "utf-8">
 <script src="modernizr-2.js"></script>	
 <!--
- My WDV341 Homework
+ My WDV221 Homework
  Author: Drew Douglass
  Date: 1/15/19
  -->

@@ -145,6 +145,7 @@ else{
 				$stmt->bindParam(':date', $event_date);
 				$stmt->bindParam(':venueid', $event_venueid);
 				$stmt->bindParam(':bandid', $band_id);
+
 				$stmt->bindParam(':time', $event_time);
 				
 				//EXECUTE the prepared statement
@@ -222,7 +223,7 @@ else{
       </p>
 
       <p>
-        <input type="hidden" name="event_venueid" id="event_venueid" value="<?php echo $event_venueid;  ?>">       
+        <input type="hidden" name="event_venueid" id="event_venueid" value="<?php echo $event_userid;  ?>">       
       </p>
       
        <p>

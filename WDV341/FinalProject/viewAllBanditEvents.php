@@ -65,8 +65,8 @@ echo "statement executed";
 				echo "<td>" . $row['EVENT_DATE'] . "</td>";
 				echo "<td>" . $row['EVENT_TIME'] . "</td>";
 				echo "<td>" . $row['EVENT_BANDID'] . "</td>";
-				echo "<td><a href='updateEvent.php?eventID=" . $row['EVENT_ID'] . "'>Update</a></td>";
-				echo "<td><a href='deleteEvent.php?eventID=" . $row['EVENT_ID'] . "'>Delete</a></td>";
+				echo "<td><a href='updateBanditEvent.php?eventId=" . $row['EVENT_ID'] . "'>Update</a></td>";
+				echo "<td><a href='deleteBanditEvent.php?eventId=" . $row['EVENT_ID'] . "'>Delete</a></td>";
 				echo "</tr>";
 			}
 			?>

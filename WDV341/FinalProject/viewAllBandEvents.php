@@ -144,9 +144,10 @@ echo "statement executed";
 	
 }
 ?>
-
-
+<div>
 	<a href="banditAdminPortal.php">Admin Home</a>
+</div>
+	
 </div>
 </body>
 </html>

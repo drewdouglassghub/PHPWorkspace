@@ -30,42 +30,50 @@ session_start();
 		$m_firstname = $_POST['m_firstname'];
 		$m_lastname = $_POST['m_lastname'];
 		$m_instruments = $_POST['m_instruments'];
+		
 
 			
 		
 		
-		/*function cannotBeEmpty($inFieldValue){
+		function cannotBeEmpty($inFieldValue){
 		
 			return empty($inFieldValue);
 		
 		}
 		
 		
-		function validateEmail($inEmail){
+		/*function validateEmail($inEmail){
 				
 			$inEmail = filter_var($inEmail, FILTER_SANITIZE_EMAIL);	//clean it
 				
 			return filter_var($inEmail,FILTER_VALIDATE_EMAIL);	//validate format
 				
-		}
+		}*/
 		
 		//VALIDATE FORM DATA  using functions defined above
 				//switch for keeping track of any form validation errors
-		
-		cannotBeEmpty($user_name);
-		
-		//validateEmail($user_email);*/
-		
 		$validForm = true;
+		cannotBeEmpty($user_name);
+		cannotBeEmpty($user_password);
+		
+		//validateEmail($user_email);
+		
+		
 		if($validForm)
 		{
 			$message = "All good";	
+			$_SESSION['userName'] = $user_name;
+			$_SESSION['userAuth'] = $user_auth;
+			$_SESSION['mFirstName'] = $m_firstname;
+			$_SESSION['mLastName'] = $m_lastname ;
+			$_SESSION['mInstruments'] = $m_instruments;
+			$_SESSION['validUser'] == "YES";
 			
 			try {
 			
 				//mysql DATE stores data in a YYYY-MM-DD format
 				$todaysDate = date("Y-m-d");		//use today's date as the default input to the date( )
-				
+				$validUser = true;
 				echo $todaysDate;
 				
 				//Create the SQL command string
@@ -96,7 +104,7 @@ session_start();
 				
 				
 				
-				$sql = ("SELECT USER_ID, USER_NAME FROM BANDIT_USER WHERE USER_NAME = '$user_name'");
+				$sql = ("SELECT USER_ID, USER_NAME, USER_AUTH FROM BANDIT_USER WHERE USER_NAME = '$user_name'");
 				echo $sql;
 				
 				echo "selected2";
@@ -108,9 +116,13 @@ session_start();
 				$stmts->execute();
 				echo "executed";
 				
-				while ($row = $stmts->fetch(PDO::FETCH_ASSOC)){				
+				while ($row = $stmts->fetch(PDO::FETCH_ASSOC)){
+								
 					$user_id = $row['USER_ID'];
+					$_SESSION['userId'] = $user_id;
+					$m_userid = $user_id;
 					$user_name= $row['USER_NAME'];
+					$user_auth = $row['USER_AUTH'];
 				}
 				 echo "userid: " . $user_id;
 				 echo "user_name: " . $user_name;
@@ -132,8 +144,9 @@ session_start();
 				$stmtm->execute();
 				echo "executed 3";
 				
+				$_SESSION['validUser'] = true;
 				$message = "The user " . $user_name . "  has been registered as a musician on BandIt.";
-	
+				
 				
 			}
 			
@@ -189,7 +202,7 @@ session_start();
         
         <?php
         
-        echo "<a href='banditIndex.php' >Login</a>";
+        echo "<a href='musicianProfile.php' >Login</a>";
 			}
 			else	//display form
 			{

@@ -3,6 +3,8 @@ include 'connectPDOBANDIT.php';
 session_cache_limiter('none');			//This prevents a Chrome error when using the back button to return to this page.
 session_start();
 
+
+$current_user = "";
 $user_name = "";
 $user_auth = "";
 $user_id = "";
@@ -37,7 +39,7 @@ echo "user name: " . $user_name;
 <div class="container">
 <h3 id="info">Administrator Options</h3>
 <p><a href="viewAllBanditEvents.php" class="link">All Shows</a></p>
-<p><a href="viewAllBands.php" class="link">All Bands</a></p>
+<p><a href="viewAllBanditBands.php" class="link">All Bands</a></p>
 <p><a href="musicianProfile.php" class="link">Musician Profile Template</a>
 <p><a href="BanditLogout.php" class="link">Logout of Admin System</a></p>
 </div>

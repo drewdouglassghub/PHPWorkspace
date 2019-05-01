@@ -1,6 +1,5 @@
 <?php
 include 'connectPDOBANDIT.php';
-session_cache_limiter('none');
 session_start();
 
 if(isset($_SESSION['validUser']) && ($_SESSION['validUser'] == "YES"))
@@ -60,7 +59,8 @@ else {
 		$validForm = true;		//switch for keeping track of any form validation errors
 		
 		cannotBeEmpty($band_name);
-		
+		cannotBeEmpty($band_description);
+		cannotBeEmpty($band_style);
 		validateEmail($band_email);
 		
 		
@@ -107,7 +107,7 @@ else {
 			{
 				$message = "There has been a problem. The system administrator has been contacted. Please try again later.";
 	
-				error_log($e->getMessage());			//Delivers a developer defined error message to the PHP log file at c:\xampp/php\logs\php_error_log
+				error_log($e->getMessage());	//Delivers a developer defined error message to the PHP log file at c:\xampp/php\logs\php_error_log
 				error_log(var_dump(debug_backtrace()));
 			
 				//Clean up any variables or connections that have been left hanging by this error.		
@@ -140,7 +140,7 @@ else {
 <div id="container">
 
 	<header>
-    	<h1>Band Creation</h1>
+    	Band Creation
     </header>
     
     <main>

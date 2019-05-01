@@ -1,6 +1,5 @@
 <?php
 include 'connectPDOBANDIT.php';
-session_cache_limiter('none');
 session_start();
 
 if(isset($_SESSION['validUser']) && ($_SESSION['validUser'] !== "YES"))
@@ -8,18 +7,21 @@ if(isset($_SESSION['validUser']) && ($_SESSION['validUser'] !== "YES"))
 header("Location:banditIndex.php");
 
 }
-else if(isset($_SESSION['bandId'])){
-	$band_id = $_SESSION['bandId'];
+else if(isset($_GET['bandId'])){
+	$band_id = $_GET['bandId'];
 	$user_name = $_SESSION['userName'];
 	$user_auth = $_SESSION['userAuth'];
 	$user_id = $_SESSION['userId'];
 	}	
-else
-	{
+else if (isset($_SESSION['bandId'])){
+
+	
 	$user_name = $_SESSION['userName'];
 	$user_auth = $_SESSION['userAuth'];
 	$user_id = $_SESSION['userId'];
-	$band_id = $_GET['bandId'];
+	$band_id = $_SESSION['bandId'];
+
+}else{
 
 }
 	echo $band_id;

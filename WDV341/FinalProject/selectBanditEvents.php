@@ -76,8 +76,8 @@ else{
 			
 			echo "<h1>No additional events currently scheduled.</h1>";
 			echo "<h3>You may add an event here: </h3>";
-			echo "<a href='insertBanditEvent.php'>Add Event</a>";
-
+			echo "<a href='insertBanditEvent.php'>Add Event</a><br>";
+			echo "<a href='musicianProfile.php'>Home</a>";
 			?>
 		
 		</div>

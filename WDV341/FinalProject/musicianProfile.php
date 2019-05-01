@@ -8,12 +8,14 @@ if(isset($_SESSION['validUser']) && ($_SESSION['validUser'] == "YES"))
 	$user_name = $_SESSION['userName'];
 	$user_auth = $_SESSION['userAuth'];
 	$user_id = $_SESSION['userId'];
+	$m_id = $_GET['musicianId'];
+	
 }
 else {
 	header("Location:banditIndex.php");
 }
 
-$sql = "SELECT M_ID, M_FIRSTNAME, M_LASTNAME, M_INSTRUMENTS, M_BANDID, M_USER_ID, M_IMAGE FROM BANDIT_MUSICIAN WHERE M_USER_ID = :userId";
+$sql = "SELECT M_ID, M_FIRSTNAME, M_LASTNAME, M_INSTRUMENTS, M_BANDID, M_USER_ID, M_IMAGE FROM BANDIT_MUSICIAN WHERE M_ID = '$m_id'";
 $stmt = $conn->prepare($sql);//prepare the query
 
 
@@ -30,23 +32,22 @@ if ($userRow != "")
 
 	
 	
-	$_SESSION['musicianId'] = $userRow['M_ID'];
-	$_SESSION['musicianFirstName'] = $userRow['M_FIRSTNAME'];
-	$_SESSION['musicianLastName'] = $userRow['M_LASTNAME'];
-	$_SESSION['musicianInstruments'] = $userRow['M_INSTRUMENTS'];
-	$_SESSION['musicianBandId'] = $userRow['M_BANDID'];
-	$_SESSION['musicianUserId'] = $userRow['M_USER_ID'];
-	$_SESSION['musicianImage'] = $userRow['M_IMAGE'];
+	$_SESSION['mId'] = $userRow['M_ID'];
+	$_SESSION['mFirstName'] = $userRow['M_FIRSTNAME'];
+	$_SESSION['mLastName'] = $userRow['M_LASTNAME'];
+	$_SESSION['mInstruments'] = $userRow['M_INSTRUMENTS'];
+	$_SESSION['mBandId'] = $userRow['M_BANDID'];
+	$_SESSION['mUserId'] = $userRow['M_USER_ID'];
+	$_SESSION['mImage'] = $userRow['M_IMAGE'];
 
-	echo $_SESSION['musicianImage'];
 	
-	$m_id = $_SESSION['musicianId'];
-	$m_firstname = $_SESSION['musicianFirstName'];
-	$m_lastname = $_SESSION['musicianLastName'];
-	$m_instruments = $_SESSION['musicianInstruments'];
-	$m_bandid = $_SESSION['musicianBandId'];
-	$m_userid =$_SESSION['musicianUserId'];
-	$m_image = $_SESSION['musicianImage'];
+	$m_id = $_SESSION['mId'];
+	$m_firstname = $_SESSION['mFirstName'];
+	$m_lastname = $_SESSION['mLastName'];
+	$m_instruments = $_SESSION['mInstruments'];
+	$m_bandid = $_SESSION['mBandId'];
+	$m_userid =$_SESSION['userId'];
+
 	
 	
 	
@@ -65,7 +66,7 @@ else
 <html >
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Band Page</title>
+<title>Musician Profile</title>
 <link href="style.css" rel="stylesheet" style="text/css"/>
 </head>
 <body>

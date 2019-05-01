@@ -2,7 +2,7 @@
 include 'connectPDOBANDIT.php';
 session_start();
 
-if(isset($_SESSION['validUser']) && ($_SESSION['validUser'] !== "YES"))
+if(isset($_SESSION['validUser']) && ($_SESSION['validUser'] != "YES"))
 {
 header("Location:banditIndex.php");
 

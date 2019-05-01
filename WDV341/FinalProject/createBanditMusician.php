@@ -41,16 +41,12 @@ session_start();
 		//VALIDATE FORM DATA  using functions defined above
 				//switch for keeping track of any form validation errors
 		$validForm = true;
-		//$formValidations->cannotBeEmpty($user_name);
+		$formValidations->cannotBeEmpty($user_name);
 		$formValidations->cannotBeEmpty($user_password);
 		$formValidations->cannotBeEmpty($m_firstname);
 		$formValidations->cannotBeEmpty($m_lastname);
 		$formValidations->cannotBeEmpty($m_instruments);
-		$formValidations->validateRequestStringChars($user_name);
-		$formValidations->validateRequestStringChars($user_password);
-		$formValidations->validateRequestStringChars($m_firstname);
-		$formValidations->validateRequestStringChars($m_lastname);
-		$formValidations->validateRequestStringChars($m_instruments);
+		
 		
 		if($validForm)
 		{
@@ -221,13 +217,13 @@ session_start();
               <p>
                 <label for="user_name">User Name: </label>
                 <input type="text" name="user_name" id="user_name" value="<?php echo $user_name;  ?>" /> 
-                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>            <span class="errMsg"> <?php echo $charsErrMsg; ?></span>       
+                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>                 
               </p>
               
                <p>
                 <label for="user_password">Password: </label>
                 <input type="text" name="user_password" id="user_password" value="<?php echo $user_password;  ?>" /> 
-                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>           <span class="errMsg"> <?php echo $charsErrMsg; ?></span>     
+                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>           
               </p>
               
               <p>
@@ -239,19 +235,19 @@ session_start();
                <p>
                 <label for="m_firstname">First Name: </label>
                 <input type="text" name="m_firstname" id="m_firstname" value="<?php echo $m_firstname;  ?>" /> 
-                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>        <span class="errMsg"> <?php echo $charsErrMsg; ?></span>        
+                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>            
               </p>
               
                <p>
                 <label for="m_lastname">Last Name: </label>
                 <input type="text" name="m_lastname" id="m_lastname" value="<?php echo $m_lastname;  ?>" /> 
-                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>             <span class="errMsg"> <?php echo $charsErrMsg; ?></span>   
+                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>      
               </p>
               
               <p>
                 <label for="m_lastname">Instruments played: </label>
                 <input type="textarea" name="m_instruments" id="m_instruments" value="<?php echo $m_instruments;  ?>" /> 
-                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>             <span class="errMsg"> <?php echo $charsErrMsg; ?></span>   
+                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>          
               </p>
               
               <p><a href="profilePictureUpload.php" >Picture Upload</a></p>

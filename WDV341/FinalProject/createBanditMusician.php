@@ -1,4 +1,6 @@
 <?php
+include('FormValidation.php');
+$formValidations = new validations();
 include 'connectPDOBANDIT.php';
 session_start();
 		
@@ -34,30 +36,21 @@ session_start();
 
 			
 		
-		
-		function cannotBeEmpty($inFieldValue){
-		
-			return empty($inFieldValue);
-		
-		}
-		
-		
-		/*function validateEmail($inEmail){
-				
-			$inEmail = filter_var($inEmail, FILTER_SANITIZE_EMAIL);	//clean it
-				
-			return filter_var($inEmail,FILTER_VALIDATE_EMAIL);	//validate format
-				
-		}*/
+
 		
 		//VALIDATE FORM DATA  using functions defined above
 				//switch for keeping track of any form validation errors
 		$validForm = true;
-		cannotBeEmpty($user_name);
-		cannotBeEmpty($user_password);
-		
-		//validateEmail($user_email);
-		
+		//$formValidations->cannotBeEmpty($user_name);
+		$formValidations->cannotBeEmpty($user_password);
+		$formValidations->cannotBeEmpty($m_firstname);
+		$formValidations->cannotBeEmpty($m_lastname);
+		$formValidations->cannotBeEmpty($m_instruments);
+		$formValidations->validateRequestStringChars($user_name);
+		$formValidations->validateRequestStringChars($user_password);
+		$formValidations->validateRequestStringChars($m_firstname);
+		$formValidations->validateRequestStringChars($m_lastname);
+		$formValidations->validateRequestStringChars($m_instruments);
 		
 		if($validForm)
 		{
@@ -144,6 +137,19 @@ session_start();
 				$stmtm->execute();
 				echo "executed 3";
 				
+				$m_id  = $row['M_ID'];
+				$sql = ("SELECT M_ID FROM BANDIT_MUSICIAN WHERE M_USER_ID = :userId");
+				$stmt = $conn->prepare($sql);
+				
+				$stmt->bindParam(':userId', $user_id);
+				$stmt->execute();
+				
+				echo "executed4";
+				while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
+					$m_id = $row['M_ID'];
+				}
+			
+				
 				$_SESSION['validUser'] = true;
 				$message = "The user " . $user_name . "  has been registered as a musician on BandIt.";
 				
@@ -202,7 +208,7 @@ session_start();
         
         <?php
         
-        echo "<a href='musicianProfile.php' >Login</a>";
+       	 echo "<a href='musicianProfile.php?mId=$m_id'>Login</a>";
 			}
 			else	//display form
 			{
@@ -215,13 +221,13 @@ session_start();
               <p>
                 <label for="user_name">User Name: </label>
                 <input type="text" name="user_name" id="user_name" value="<?php echo $user_name;  ?>" /> 
-                <span class="errMsg"> <?php echo $userNameErrMsg; ?></span>                
+                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>            <span class="errMsg"> <?php echo $charsErrMsg; ?></span>       
               </p>
               
                <p>
                 <label for="user_password">Password: </label>
                 <input type="text" name="user_password" id="user_password" value="<?php echo $user_password;  ?>" /> 
-                <span class="errMsg"> <?php echo $userPasswordErrMsg; ?></span>                
+                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>           <span class="errMsg"> <?php echo $charsErrMsg; ?></span>     
               </p>
               
               <p>
@@ -233,19 +239,19 @@ session_start();
                <p>
                 <label for="m_firstname">First Name: </label>
                 <input type="text" name="m_firstname" id="m_firstname" value="<?php echo $m_firstname;  ?>" /> 
-                <span class="errMsg"> <?php echo $mFirstNameErrMsg; ?></span>                
+                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>        <span class="errMsg"> <?php echo $charsErrMsg; ?></span>        
               </p>
               
                <p>
                 <label for="m_lastname">Last Name: </label>
                 <input type="text" name="m_lastname" id="m_lastname" value="<?php echo $m_lastname;  ?>" /> 
-                <span class="errMsg"> <?php echo $mLastNameErrMsg; ?></span>                
+                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>             <span class="errMsg"> <?php echo $charsErrMsg; ?></span>   
               </p>
               
               <p>
                 <label for="m_lastname">Instruments played: </label>
                 <input type="textarea" name="m_instruments" id="m_instruments" value="<?php echo $m_instruments;  ?>" /> 
-                <span class="errMsg"> <?php echo $mInstrumentseErrMsg; ?></span>                
+                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>             <span class="errMsg"> <?php echo $charsErrMsg; ?></span>   
               </p>
               
               <p><a href="profilePictureUpload.php" >Picture Upload</a></p>

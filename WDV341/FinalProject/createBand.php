@@ -1,4 +1,6 @@
 <?php
+include('FormValidation.php');
+$formValidations = new validations();
 include 'connectPDOBANDIT.php';
 session_start();
 
@@ -39,29 +41,14 @@ else {
 		$band_userid = $_POST['band_userid'];
 			
 		
-		
-		function cannotBeEmpty($inFieldValue){
-		
-			return empty($inFieldValue);
-		
-		}
-		
-		
-		function validateEmail($inEmail){
-				
-			$inEmail = filter_var($inEmail, FILTER_SANITIZE_EMAIL);	//clean it
-				
-			return filter_var($inEmail,FILTER_VALIDATE_EMAIL);	//validate format
-				
-		}
-		
+	
 		//VALIDATE FORM DATA  using functions defined above
 		$validForm = true;		//switch for keeping track of any form validation errors
 		
-		cannotBeEmpty($band_name);
-		cannotBeEmpty($band_description);
-		cannotBeEmpty($band_style);
-		validateEmail($band_email);
+		$formValidations->cannotBeEmpty($band_name);
+		$formValidations->cannotBeEmpty($band_description);
+		$formValidations->mustBeChecked($band_style);
+		$formValidations->validateEmail($band_email);
 		
 		
 		if($validForm)
@@ -168,7 +155,7 @@ else {
               <p>
                 <label for="band_name">Band Name: </label>
                 <input type="text" name="band_name" id="band_name" value="<?php echo $band_name;  ?>" /> 
-                <span class="errMsg"> <?php echo $bandNameErrMsg; ?></span>
+                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>
                 
                 
                
@@ -181,7 +168,8 @@ else {
               
               <p>
                 <label for="band_description">Band Description: </label>  
-                <input type="textarea" name="band_description" id="band_description" value="<?php echo $band_description;  ?>" />            
+                <input type="textarea" name="band_description" id="band_description" value="<?php echo $band_description;  ?>" />     
+                <span class="errMsg"> <?php echo $emptyErrMsg; ?></span>       
               </p>
                 <p>
 			        <label for="select">Style: </label>
@@ -192,7 +180,7 @@ else {
 			          <option <?php if (isset($band_style) && $band_style=="Country") echo "selected";?>>Country</option>
 			          <option <?php if (isset($band_style) && $band_style=="Jazz") echo "selected";?>>Jazz</option>
 			          <option <?php if (isset($band_style) && $band_style=="Rap") echo "selected";?>>Rap</option>
-			        </select>
+			        </select><span class="errMsg"> <?php echo $mustBeCheckedErrMsg; ?></span>
 		      	</p>
 		      	<p>
 		      	<input type="hidden" name="band_userid" id="band_userid" value="<?php echo $user_id ?>"/> 

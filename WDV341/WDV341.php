@@ -38,7 +38,7 @@
 		<li><a href="http://drewdouglass.net/WDV341/selectOneEvent.php">Select One Event</a></li>
 		<li><a href="http://drewdouglass.net/WDV341/formatEvents.php">Events Formatted</a></li>
 		<li><a href="http://drewdouglass.net/WDV341/presenterLogin.php">Presenter Login</a></li>
-		<li><a href="http://drewdouglass.net/WDV341/banditIndex.php">BandIt - Final Project</a></li>
+		<li><a href="http://drewdouglass.net/WDV341/FinalProject/banditIndex.php">BandIt - Final Project</a></li>
 	</ul>
 	
 	</nav>

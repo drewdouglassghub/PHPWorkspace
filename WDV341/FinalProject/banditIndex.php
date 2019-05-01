@@ -11,7 +11,7 @@ session_start();
 	$PassWord = "wdv341";
 
 	if (isset($_SESSION['validUser']) && ($_SESSION['validUser'] == "YES"))
-		{
+		{ 
 		
 			$message = "Login successful";
 		}
@@ -22,7 +22,13 @@ session_start();
 		}
 		
 		
-		if (isset($_POST['submitLogin']) )
+		if($validForm)
+		
+		
+		
+		
+		
+		if (isset($_POST['submitLogin']) && ($validForm))
 		{
 				$inUsername = $_POST['loginUsername'];
 				$inPassword = $_POST['loginPassword'];
@@ -49,7 +55,7 @@ session_start();
 				$_SESSION['currentUser'] = $inUsername;
 				$_SESSION['userAuth'] = $userRow['USER_AUTH'];					
 				$_SESSION['userId'] = $userRow['USER_ID'];
-			echo $_SESSION['userAuth'];
+				echo $_SESSION['userAuth'];
 			}
 			else
 			{

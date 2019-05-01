@@ -1,4 +1,6 @@
 <?php
+include 'connectPDOBANDIT.php';
+session_start();
 
   $id = $_GET['id'];
   $band_id = $_SESSION['bandId'];
@@ -12,16 +14,18 @@
 
 include 'connectPDOBANDIT.php';
  
-  $sql = "SELECT BAND_IMAGE FROM BANDIT_BAND WHERE BAND_ID='$band_id'";
+  $sql = "SELECT M_IMAGE FROM BANDIT_MUSICIAN WHERE M_USER_ID='$id'";
  
   $stmt = $conn->prepare($sql);
   $stmt->execute();
 
   
-  $stmt->fetchAll();
   
-  echo $stmt['BAND_IMAGE'];
+  $row = $stmt->fetchAll();
+  
+  $m_image = $row['M_IMAGE'];
+  $_SESSION['mImage'] = $m_image;
   
   header("Content-type: images/jpeg");
-  echo $row['$BAND_IMAGE'];
+  echo "musician image: " . $m_image;
 ?>

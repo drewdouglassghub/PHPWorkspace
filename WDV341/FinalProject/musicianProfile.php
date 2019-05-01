@@ -5,17 +5,18 @@ session_start();
 
 if(isset($_SESSION['validUser']) && ($_SESSION['validUser'] == "YES"))
 {
+	$m_image = $_SESSION['mImage'];
 	$user_name = $_SESSION['userName'];
 	$user_auth = $_SESSION['userAuth'];
 	$user_id = $_SESSION['userId'];
-	$m_id = $_GET['musicianId'];
+	$m_id = $_GET['mId'];
 	
 }
 else {
 	header("Location:banditIndex.php");
 }
 
-$sql = "SELECT M_ID, M_FIRSTNAME, M_LASTNAME, M_INSTRUMENTS, M_BANDID, M_USER_ID, M_IMAGE FROM BANDIT_MUSICIAN WHERE M_ID = '$m_id'";
+$sql = "SELECT M_ID, M_FIRSTNAME, M_LASTNAME, M_INSTRUMENTS, M_BANDID, M_USER_ID, M_IMAGE FROM BANDIT_MUSICIAN WHERE M_USER_ID = '$user_id'";
 $stmt = $conn->prepare($sql);//prepare the query
 
 
@@ -30,8 +31,6 @@ $userRow = $stmt->fetch(PDO::FETCH_ASSOC);
 if ($userRow != "")
 {
 
-	
-	
 	$_SESSION['mId'] = $userRow['M_ID'];
 	$_SESSION['mFirstName'] = $userRow['M_FIRSTNAME'];
 	$_SESSION['mLastName'] = $userRow['M_LASTNAME'];
@@ -47,9 +46,9 @@ if ($userRow != "")
 	$m_instruments = $_SESSION['mInstruments'];
 	$m_bandid = $_SESSION['mBandId'];
 	$m_userid =$_SESSION['userId'];
-
+	$m_image = $_SESSION['mImage'];
 	
-	
+	echo "image: " . $m_image;
 	
 }
 else

@@ -51,7 +51,7 @@ if ($userRow != "")
 	$band_name = $_SESSION['bandName'];
 	$band_style = $_SESSION['bandStyle'];
 	$band_email = $_SESSION['bandEmail'];
-	$band_image = "KCCLogo.jpg";
+	//$band_image = "KCCLogo.jpg";
 	
 }
 else

@@ -17,7 +17,7 @@ else {
 	header("Location:banditIndex.php");
 }
 
-$sql = "SELECT BAND_ID, BAND_NAME, BAND_STYLE, BAND_IMAGE, BAND_EMAIL FROM BANDIT_BAND WHERE BAND_USERID = :userId";
+$sql = "SELECT BAND_ID, BAND_NAME, BAND_STYLE, BAND_IMAGE, BAND_DESCRIPTION, BAND_EMAIL FROM BANDIT_BAND WHERE BAND_USERID = :userId";
 $stmt = $conn->prepare($sql);
 
 $stmt->bindParam(":userId", $user_id);

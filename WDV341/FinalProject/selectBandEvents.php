@@ -1,7 +1,7 @@
 <?php
 session_start();
 session_cache_limiter('none');
-if(isset($_SESSION['validUser']) && ($_SESSION['validUser'] !== "YES") && (($_SESSION['userAuth'] == "ADMIN") ||($_SESSION['userAuth'] == "MUSICIAN")))
+if((isset($_SESSION['validUser']) && ($_SESSION['validUser'] !== "YES")) && (($_SESSION['userAuth'] == "ADMIN") ||($_SESSION['userAuth'] == "MUSICIAN")))
 {
 	header("Location:banditIndex.php");
 }

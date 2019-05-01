@@ -1,54 +1,67 @@
 <?php
-include 'FormValidation.php';
-include 'connectPDO2.php';
-$formValidations = new validations();
 session_cache_limiter('none');
 session_start();
-$eventId = $_GET['eventID'];
-$stmt = $conn->prepare("SELECT EVENT_NAME, EVENT_DESCRIPTION, EVENT_PRESENTER, EVENT_DATE, EVENT_TIME FROM WDV_EVENT WHERE EVENT_ID = '$eventId'");
+include 'connectPDOBANDIT.php';
+$event_userid = $_SESSION['userId'];
+$user_name = $_SESSION['userName'];
+$user_auth = $_SESSION['userAuth'];
+$user_id = $_SESSION['userId'];
+$event_id = $_GET['eventId'];
+$_SESSION['eventId'] = $event_id;
+$event_userid = $user_id;
+
+
+$stmt = $conn->prepare("SELECT EVENT_ID, EVENT_NAME, EVENT_DESCRIPTION, EVENT_USERID, EVENT_DATE, EVENT_TIME, EVENT_VENUEID, EVENT_BANDID FROM BANDIT_EVENT WHERE EVENT_ID = :eventId");
+
+$stmt->bindParam(':eventId', $event_id);
 $stmt->execute();
-if(($_SESSION['validUser']) != "yes")
+
+
+if(($_SESSION['validUser']) != "YES")
 {
 	header("Location:banditIndex.php");
 }
 else{
-	$event_id = "";
 	$event_name = "";
 	$event_description = "";
-	$event_presenter="";
 	$event_date = "";
 	$event_time = "";
 	$event_address = "";
+	$event_venueid = "";
+	$event_bandid = "";
 	$eventIdErrMsg = "";
 	$eventFieldErrMsg = "";
 	$eventDescriptionErrMsg = "";
-	$eventPresenterErrMsg = "";
+	$eventUserIdErrMsg = "";
 	$eventDateErrMsg = "";
 	$eventTimeErrMsg = "";
+	$eventVenueIdErrMsg = "";
+	$eventBandIdErrMsg = "";
 	$eventAddressErrMsg = "";
 	$validForm = false;
+	
+	$band_id = $_SESSION['bandId'];
+	
+
 	if(isset($_POST["submit"]))
 	{
 		//The form has been submitted and needs to be processed
 		//Validate the form data here!
 		//Get the name value pairs from the $_POST variable into PHP variables
 		//This example uses PHP variables with the same name as the name atribute from the HTML form
-		
+		$event_id = $_POST['event_id'];
 		$event_name = $_POST['event_name'];
 		$event_description = $_POST['event_description'];
-		$event_presenter = $_POST['event_presenter'];
+		$event_userid = $_POST['event_userid'];
 		$event_date = $_POST['event_date'];
 		$event_time = $_POST['event_time'];
+		$event_venueid = $_POST['event_venueid'];
+		$event_bandid = $_POST['event_bandid'];
 		$event_address = $_POST['event_address'];
-		function clearForm()
-		{
-			$event_name = "";
-			$event_description = "";
-			$event_presenter = "";
-			$event_date = "";
-			$event_time = "";
-		}
-		function validateMustBeFilled($inValue)
+		
+		$band_id = $_POST['event_bandid'];
+		
+		/*function validateMustBeFilled($inValue)
 		{
 			global $validForm, $eventFieldErrMsg;		//Use the GLOBAL Version of these variables instead of making them local
 			$eventNameErrMsg = "";
@@ -84,39 +97,68 @@ else{
 		validateMustBeFilled($event_description);
 		validateMustBeFilled($event_presenter);
 		validateDate($event_date);
-		validateAddress($event_address);
+		validateAddress($event_address);*/
+		
+
+		$validForm = true;
 		if($validForm)
 		{
 			$message = "";
-			echo "valid";
-			echo $event_id;
+	
 			try {
-				require 'connectPDO2.php';	//CONNECT to the database
-				
-				$conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+				include 'connectPDOBANDIT.php';
+
 				//mysql DATE stores data in a YYYY-MM-DD format
 				$todaysDate = date("Y-m-d");		//use today's date as the default input to the date( )
-				echo $todaysDate;
-				//Create the SQL command string
-				$sqlu = "UPDATE WDV_EVENT SET EVENT_NAME = :name, EVENT_PRESENTER = :presenter, EVENT_DATE = :date, EVENT_TIME = :time, EVENT_DESCRIPTION = :description WHERE EVENT_ID = '$event_id'";
+
+				date_format($event_date,"Y/m/d");
+				$event_time = date('H:i:s', strtotime($event_time));
 				
-				echo "UPDATE SUCCESS";
+				
+				
+				
+				//Create the SQL command string
+				$sqlu = "UPDATE BANDIT_EVENT SET EVENT_NAME = :name, EVENT_DESCRIPTION = :description, EVENT_USERID = :userId, EVENT_DATE = :date, EVENT_VENUEID = :venueId, EVENT_BANDID =  :bandId, EVENT_TIME = :time WHERE EVENT_ID = :eventId";
+				echo "id: " . $event_id;
+				echo "name: " . $event_name;
+				echo "desc: " . $event_description;
+				echo "user: " . $event_userid;
+				echo "date: " . $event_date;
+				echo "venue: " . $event_venueid;
+				echo "band: " . $event_bandid;
+				echo "time: " . $event_time;
+	
 				//PREPARE the SQL statement
 				$stmtu = $conn->prepare($sqlu);
-				echo "connection prepared";
 				//BIND the values to the input parameters of the prepared statement
-				//$stmtu->bindParam(':id', $event_id);
-				$stmtu->bindParam(':name', $event_name);			
-				$stmtu->bindParam(':presenter', $event_presenter);
-				$stmtu->bindParam(':date', $event_date);
+
+				
+				
+				$stmtu->bindParam(':eventId', $event_id);
+				$stmtu->bindParam(':name', $event_name);
+				$stmtu->bindParam(':description', $event_description);		
+				$stmtu->bindParam(':userId', $event_userid);	
+				$stmtu->bindParam(':date', $event_date);			
+				$stmtu->bindParam(':venueId', $event_venueid);
+				$stmtu->bindParam(':bandId', $event_bandid);
 				$stmtu->bindParam(':time', $event_time);
-				$stmtu->bindParam(':description', $event_description);
-					
+				
+				echo "id: " . $event_id;
+				echo "name: " . $event_name;
+				echo "desc: " . $event_description;
+				echo "user: " . $event_userid;
+				echo "date: " . $event_date;
+				echo "venue: " . $event_venueid;
+				echo "band: " . $event_bandid;
+				echo "time: " . $event_time; 
+
 				echo "connection parameterized";
 				//EXECUTE the prepared statement
 				$stmtu->execute($sqlu);
 				echo "executed";
-				include 'newEventResults.php';
+				
+				$_SESSION['$eventId'] = $event_id;
+				include 'eventResults.php';
 				
 	
 			}
@@ -135,15 +177,19 @@ else{
 	}
 	else
 	{
+				
 				$stmt->setFetchMode(PDO::FETCH_ASSOC);
 				
 				$row=$stmt->fetch(PDO::FETCH_ASSOC);
 				
+				$event_id=$row['EVENT_ID'];
 				$event_name=$row['EVENT_NAME'];
 				$event_description=$row['EVENT_DESCRIPTION'];
-				$event_date=$row['EVENT_DATE'];
+				$event_date=$row['EVENT_DATE'];				
+				$event_venueid=$row['EVENT_VENUEID'];
+				$event_bandid=$row['EVENT_BANDID'];
 				$event_time=$row['EVENT_TIME'];
-				$event_presenter=$row['EVENT_PRESENTER'];
+
 						//Form has not been seen by the user.  display the form
 	}// ends if submit
 }
@@ -179,7 +225,7 @@ else{
 
 		<h2 style="text-align: left; margin-left: 2em;">Update your event:</h2>
 		<form name="form1" method="post" id="event_creation"
-			action="updateEvent.php">
+			action="updateBanditEvent.php">
 			<?php
 			//If the form was submitted and valid and properly put into database display the INSERT result message
 			if($validForm)
@@ -196,7 +242,7 @@ else{
 				?>
 
 			<p>
-				<input type="hidden" name="event_address" id="textfield">
+				<input type="hidden" name="event_address" id="event_address">
 				<?php //HONEYPOT FIELD ?>
 			</p>
 			
@@ -205,39 +251,42 @@ else{
 				<?php //ID FIELD?>
 			</p>
 			<p>
-				<label for="textfield1">Name:</label> <input type="text" size="45"
-					name="event_name" id="textfield1"
+				<label for="event_name">Name:</label> <input type="text" size="45"
+					name="event_name" id="event_name"
 					value="<?php echo $event_name;  ?>"> <span class="errMsg"> <?php echo $eventFieldErrMsg; ?>
 				</span>
 			</p>
 
 			<p>
-				<label for="textfield3">Event Presenter: </label> <input type="text"
-					name="event_presenter" id="textfield3"
-					value="<?php echo $event_presenter;  ?>"> <span class="errMsg"> <?php echo $eventFieldErrMsg; ?>
-				</span>
-			</p>
-
-			<p>
-				<label for="textfield4">Event Date:</label> <input type="text"
-					name="event_date" id="textfield4"
+				<label for="event_date">Event Date:</label> <input type="text"
+					name="event_date" id="event_date"
 					value="<?php echo $event_date;  ?>"> <span class="errMsg"> <?php echo $eventDateErrMsg; ?>
 				</span>
 			</p>
 			<p>
-				<label for="textfield5">Event Time: </label> <input type="text"
-					name="event_time" id="textfield5"
+				<label for="event_time">Event Time: </label> <input type="time"
+					name="event_time" id="event_time"
 					value="<?php echo $event_time;  ?>"> <span class="errMsg"> <?php echo $eventTimeErrMsg; ?>
 				</span>
 			</p>
 			<p>
-				<label for="textfield2">Event Description:</label>
-				<textarea type="text" rows="2" cols="45" name="event_description"
-					id="textfield2"><?php echo $event_description;  ?></textarea>
+				<label for="event_description">Event Description:</label>
+				<textarea type="text" rows="2" cols="45" name="event_description" id="event_description"><?php echo $event_description;  ?></textarea>
 				<span class="errMsg"> <?php echo $eventFieldErrMsg; ?>
 				</span>
 			</p>
-
+			<p>
+				<input type="hidden" name="event_venueid" id="event_venueid" value="<?php echo $event_venueid;  ?>"> 
+				<span class="errMsg"> <?php echo $eventFieldErrMsg; ?></span>
+			</p>
+			<p>
+				<input type="hidden" name="event_userid" id="event_userid" value="<?php echo $event_userid;  ?>"> 
+				<span class="errMsg"> <?php echo $eventFieldErrMsg; ?></span>
+			</p>
+			<p>
+				<input type="hidden" name="event_bandid" id="event_bandid" value="<?php echo $event_bandid;  ?>"> 
+				<span class="errMsg"> <?php echo $eventFieldErrMsg; ?></span>
+			</p>
 			<p>
 				<input type="submit" name="submit" id="submit" value="Submit"
 					class="button"> <input type="reset" name="btnReset" id="reset"

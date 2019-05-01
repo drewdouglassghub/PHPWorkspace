@@ -1,7 +1,10 @@
 <?php
 include 'connectPDOBANDIT.php';
 session_start();
-
+$event_userid = $_SESSION['userid'];
+$user_name = $_SESSION['userName'];
+$user_auth = $_SESSION['userAuth'];
+$user_id = $_SESSION['userId'];
 if(isset($_SESSION['validUser']) && ($_SESSION['validUser'] == "YES"))
 {
 	
@@ -73,16 +76,14 @@ $stmt->execute();
 				echo "<td><a href='updateBand.php?bandId=" . $row['BAND_ID'] . "'>Update</a></td>";
 				echo "<td><a href='deleteBand.php?bandId=" . $row['BAND_ID'] . "'>Delete</a></td>";
 				echo "<td><a href='bandProfile.php?bandId=" . $row['BAND_ID'] . "'>Band Profile</a></td>";
-				echo "<td><a href='selectBandEvents.php'>View Events</a></td>";
+				echo "<td><a href='selectBandEvents.php?bandId=" . $row['BAND_ID'] . "'>View Events</a></td>";
 				echo "</tr>";
 			}
 			?>
 			</table>
 			
-			<?php 
-			echo "<h3>You may add an event here: </h3>";
-			?>
-			<a href='insertBanditEvent.php'>Add Event</a>
-
+		<div class="container2">
+			<a href='musicianProfile.php'>Home</a>
+		</div>
 </body>
 </html>

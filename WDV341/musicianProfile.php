@@ -1,5 +1,6 @@
 <?php
 include 'connectPDOBANDIT.php';
+session_cache_limiter('none');
 session_start();
 
 if(isset($_SESSION['validUser']) && ($_SESSION['validUser'] == "YES"))
@@ -69,7 +70,7 @@ else
 </head>
 <body>
 
-<h1>Welcome <?php echo $_SESSION['m_firstname']; ?></h1>
+<h1>Welcome <?php echo $m_firstname; ?></h1>
 
 <div class="piccontainer" id="profilePic" name="profilePic">
 
@@ -79,23 +80,18 @@ echo '<br><img src="'. $m_image .'">';
 
 ?>
 </div>
-
+<div class="container">
 		<h2><a href="profilePictureUpload.php" >Picture Upload</a></h2>
 
-<table>
-<tr>
-	<th>First Name: </th>
-	<th>Last Name: </th>
-	<th>Instruments: </th>
-</tr>
-<tr>
-	<td><?php echo $m_firstname; ?></td>
-	<td><?php echo $m_lastname; ?></td>
-	<td><?php echo $m_instruments; ?></td>	
-</tr>
-</table>
+	<p>First Name: <?php echo $m_firstname; ?></p>
+	<p>Last Name: <?php echo $m_lastname; ?></p>
+	<p>Instruments: <?php echo $m_instruments; ?> </p>
+</div>
+
+<div class="container2">
 <a href='createBand.php'>Create a Band</a>
 <a href='viewUserBands.php'>View My Bands</a>
 <a href="BanditLogout.php">BandIt Logout</a>
+</div>
 </body>
 </html>

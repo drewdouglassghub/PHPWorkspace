@@ -58,7 +58,6 @@ else{
 	{
 		$event_name = "";
 		$event_description = "";
-		$event_presenter = "";
 		$event_date = "";
 		$event_time = "";
 	}
@@ -124,54 +123,30 @@ else{
 		    $_SESSION['date'] = $event_date;
 			$_SESSION['time'] = $event_time;
 			
-				
+				echo $band_id;
 			try {
 		
 				
 				//mysql DATE stores data in a YYYY-MM-DD format
 				$todaysDate = date("Y-m-d");		//use today's date as the default input to the date( )
 				
-				date_format($event_date,"Y/m/d");
-				
-				
-				
+				date_format($event_date,"Y/m/d");		
 				$event_time = date('H:i:s', strtotime($event_time));
 				
-				$sql ="INSERT INTO BANDIT_EVENT (EVENT_NAME, EVENT_DESCRIPTION, EVENT_USERID, EVENT_VENUEID, EVENT_BANDID, EVENT_DATE, EVENT_TIME) VALUES(:name, :description, :userid, :venueid, :bandid, :date, :time)";
-				
-				
-				//Create the SQL command string
-				/*$sql = "INSERT INTO BANDIT_EVENT (";
-				$sql .= "EVENT_NAME, ";
-				$sql .= "EVENT_DESCRIPTION, ";
-				$sql .= "EVENT_USERID, ";
-				$sql .= "EVENT_DATE, ";
-				$sql .= "EVENT_TIME,";
-				$sql .= "EVENT_VENUEID";
-				$sql .= "EVENT_BANDID";
-				$sql .= ") VALUES (:name, :description, :userid, :date, :time, :venueid, :bandid)";*/
-		
-				
+				$sql ="INSERT INTO BANDIT_EVENT (EVENT_NAME, EVENT_DESCRIPTION, EVENT_USERID, EVENT_DATE, EVENT_VENUEID, EVENT_BANDID, EVENT_TIME) VALUES(:name, :description, :userid, :date, :venueid, :bandid, :time)";
+				echo $sql;
 				//PREPARE the SQL statement
 				$stmt = $conn->prepare($sql);
-			
+				echo "connection prepared";
 				//BIND the values to the input parameters of the prepared statement
 				$stmt->bindParam(':name', $event_name);
 				$stmt->bindParam(':description', $event_description);
 				$stmt->bindParam(':userid', $event_userid);
+				$stmt->bindParam(':date', $event_date);
 				$stmt->bindParam(':venueid', $event_venueid);
 				$stmt->bindParam(':bandid', $band_id);
-				$stmt->bindParam(':date', $event_date);
 				$stmt->bindParam(':time', $event_time);
 				
-				echo "user" . $event_userid;
-				echo "venue" . $event_venueid;
-				echo "description" . $event_description;
-				echo "name" . $event_name;
-				echo "band" . $band_id;
-				echo "date" . $event_date;
-				echo "time" . $event_time;
-	
 				//EXECUTE the prepared statement
 				$stmt->execute();
 				
@@ -247,7 +222,7 @@ else{
       </p>
 
       <p>
-        <input type="hidden" name="event_venueid" id="event_venueid" value="<?php echo $event_userid;  ?>">       
+        <input type="hidden" name="event_venueid" id="event_venueid" value="<?php echo $event_venueid;  ?>">       
       </p>
       
        <p>
@@ -269,7 +244,7 @@ else{
 <?php
 			}//end else
         ?>    	
-<a href='selectBandEvents.php'>View Band Events</a>        
+<a href='selectBanditEvents.php'>View Band Events</a>        
 </div>
 
 </body>

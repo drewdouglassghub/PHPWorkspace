@@ -18,7 +18,7 @@ else
 }
 
 
-$sql = ("SELECT EVENT_ID, EVENT_NAME, EVENT_DESCRIPTION, EVENT_USERID, EVENT_DATE, EVENT_TIME, EVENT_BANDID, BAND_NAME FROM BANDIT_EVENT WHERE EVENT_USERID = :userId AND EVENT_BANDID = :bandId");
+$sql = ("SELECT EVENT_ID, EVENT_NAME, EVENT_DESCRIPTION, EVENT_USERID, EVENT_DATE, EVENT_TIME, EVENT_BANDID, EVENT_VENUEID FROM BANDIT_EVENT WHERE EVENT_USERID = :userId AND EVENT_BANDID = :bandId");
 
 
 $stmt=$conn->prepare($sql);
@@ -49,38 +49,104 @@ echo "statement executed";
 </head>
 <body>
 
-<header>Event Updated</header>
+<header>Band Events</header>
 
 <div class="container">
-<table>
-<tr>
-	<th>ID</th>
-	<th>Name</th>
-	<th>Description</th>
-	<th>UserID</th>
-	<th>Date</th>
-	<th>Time</th>
-	<th>BandID</th>
-</tr>
-<tr>
+
 <?php
 	while($row = $stmt->fetch(PDO::FETCH_ASSOC))
 {
-	echo "<tr>";
-	echo "<td>" . $row['EVENT_ID'] . "</td>";
-	echo "<td>" . $row['EVENT_NAME'] . "</td>";
-	echo "<td>" . $row['EVENT_DESCRIPTION'] . "</td>";
-	echo "<td>" . $row['EVENT_USERID'] . "</td>";
-	echo "<td>" . $row['EVENT_DATE'] . "</td>";
-	echo "<td>" . $row['EVENT_TIME'] . "</td>";
-	echo "<td>" . $row['EVENT_BANDID'] . "</td>";
+	echo "<p>
+        <div class='eventBlock'>	
+            <div>";
+			$date = explode('/', $row['EVENT_DATE']);
+			
+			$year = $date[2];
+			$month = $date[0];
+			
+			echo "year: " . $year;
+			echo "month: " . $month;
+			
+           if ($month == date("m")){
+           	
+           	echo "<span class='displayEvent'style='font-style:italic; font-weight:bold; color: red'>Event: "  . $row['EVENT_NAME'] . "</span></br>
+           	</div>
+           		<div>
+                <span class='displayVenue'>Venue: "  . $row['EVENT_VENUEID'] . "</span>
+            </div>
+           		<div>
+           			<span class='displayDescription'>Description: " . $row['EVENT_DESCRIPTION'] . "</span>
+           		</div>
+           	<div>
+           	<span class='displayDate'>Date: " . $row['EVENT_DATE'] . "</span>
+           	</div>
+           	<div>
+           	<span class='displayTime'>Time: " . $row['EVENT_TIME'] . "</span>
+           	</div>
+           	<div>
+            	<span class='displayBand'>Band: " . $row['EVENT_BANDID'] . "</span>
+            </div>
+            <div>
+            <a href='updateEvent.php?eventID=" . $row['EVENT_ID'] . "'>Update</a>
+            </div>
+           	</div>
+           	</p>";
+           }
+           	else if ($month > date("m") && ($year >= date("Y"))){
+           	echo "<span class='displayEvent' style='font-style:italic'>Event: "  . $row['EVENT_NAME'] . "</span></br>
+           		
+            </div>
+            <div>
+                <span class='displayVenue'>Venue: "  . $row['EVENT_VENUEID'] . "</span>
+            </div>
+            <div>
+            	<span class='displayDescription'>Description: " . $row['EVENT_DESCRIPTION'] . "</span>
+            </div>
+            <div>
+            	<span class='displayDate'>Date: " . $row['EVENT_DATE'] . "</span>
+            </div>
+            <div>
+            	<span class='displayTime'>Time: " . $row['EVENT_TIME'] . "</span>
+            </div>
+            <div>
+            	<span class='displayBand'>Band: " . $row['EVENT_BANDID'] . "</span>
+            </div>
+            <div>
+            <a href='updateEvent.php?eventID=" . $row['EVENT_ID'] . "'>Update</a>
+            </div>
+        	</div>
+    		</p>";
+  			}
+  			else{
+  				echo "<span class='displayEvent'>Event: "  . $row['EVENT_NAME'] . "</span></br>
+  				 
+  				</div>
+  				<div>
+                <span class='displayVenue'>Venue: "  . $row['EVENT_VENUEID'] . "</span>
+            </div>
+  				<div>
+  				<span class='displayDescription'>Description: " . $row['EVENT_DESCRIPTION'] . "</span>
+  				</div>
+  				<div>
+  				<span class='displayDate'>Date: " . $row['EVENT_DATE'] . "</span>
+  				</div>
+  				<div>
+  				<span class='displayTime'>Time: " . $row['EVENT_TIME'] . "</span>
+  				</div>
+  				<div>
+            	<span class='displayBand'>Band: " . $row['EVENT_BANDID'] . "</span>
+            </div>
+            <div>
+            <a href='updateEvent.php?eventID=" . $row['EVENT_ID'] . "'>Update</a>
+            </div>
+  				</div>
+  				</p>";
 	
 }
 ?>
-</tr>
-</table>
 
-	<a href="selectEvents.php">Event List</a>
+
+	<a href="banditAdminPortal.php">Admin Home</a>
 </div>
 </body>
 </html>

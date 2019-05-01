@@ -1,5 +1,6 @@
 <?php
 include 'connectPDOBANDIT.php';
+session_cache_limiter('none');
 session_start();
 
 if(isset($_SESSION['validUser']) && ($_SESSION['validUser'] == "YES"))

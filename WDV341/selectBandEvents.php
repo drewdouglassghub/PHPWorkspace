@@ -1,21 +1,31 @@
 <?php
 session_start();
-if(isset($_SESSION['validUser']) && ($_SESSION['validUser'] !== "YES"))
+session_cache_limiter('none');
+if(isset($_SESSION['validUser']) && ($_SESSION['validUser'] !== "YES") && (($_SESSION['userAuth'] == "ADMIN") ||($_SESSION['userAuth'] == "MUSICIAN")))
 {
 	header("Location:banditIndex.php");
 }
-else{
-	include 'connectPDOBANDIT.php';
+else if(isset($_SESSION['bandId'])){
+
+	
+	include 'connectPDOBANDIT.php';	
 			$band_id = $_SESSION['bandId'];
 			$user_name = $_SESSION['userName'];
 			$user_auth = $_SESSION['userAuth'];
 			$user_id = $_SESSION['userId'];
 			$venue_id = 1;
 	
-			$sql = ("SELECT EVENT_ID, EVENT_NAME, EVENT_DESCRIPTION, EVENT_BANDID, EVENT_DATE, EVENT_TIME FROM BANDIT_EVENT WHERE EVENT_BANDID = '$band_id'");
+			$sql = ("SELECT EVENT_ID, EVENT_NAME, EVENT_DESCRIPTION, EVENT_BANDID, EVENT_DATE, EVENT_TIME, EVENT_VENUEID FROM BANDIT_EVENT WHERE EVENT_BANDID = '$band_id'");
 			$stmt = $conn->prepare($sql);
 			$stmt->execute();
 
+}else{
+	$band_id = $_GET['bandId'];
+	$_SESSION['bandId'] = $_GET['bandId'];
+	$user_name = $_SESSION['userName'];
+	$user_auth = $_SESSION['userAuth'];
+	$user_id = $_SESSION['userId'];
+	$venue_id = 1;
 }
 
 ?>
@@ -66,8 +76,10 @@ else{
 				echo "<td>" . $row['EVENT_BANDID'] . "</td>";
 				echo "<td>" . $row['EVENT_DATE'] . "</td>";
 				echo "<td>" . $row['EVENT_TIME'] . "</td>";
-				echo "<td><a href='updateBandEvent.php?eventID=" . $row['EVENT_ID'] . "'>Update</a></td>";
-				echo "<td><a href='deleteBandEvent.php?eventID=" . $row['EVENT_ID'] . "'>Delete</a></td>";
+				echo "<td><a href='updateBanditEvent.php?eventId=" . $row['EVENT_ID'] . "'>Update</a></td>";
+				echo "<td><a href='deleteBanditEvent.php?eventId=" . $row['EVENT_ID'] . "'>Delete</a></td>";
+	
+				
 				echo "</tr>";
 			}
 			?>

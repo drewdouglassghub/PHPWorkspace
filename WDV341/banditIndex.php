@@ -1,5 +1,5 @@
 <?php 
-include('FormValidation.php');
+include('FormValidation.php');																																																					
 include 'connectPDOBANDIT.php';
 $formValidations = new validations();
 session_cache_limiter('none');			//This prevents a Chrome error when using the back button to return to this page.
@@ -7,8 +7,8 @@ session_start();
 
 	$loginErrMessage = "Invalid user name or password";
 	$clearMsg = "";
-	$loginID = "";
-	$PassWord = "";
+	$loginID = "wdv341";
+	$PassWord = "wdv341";
 
 	if (isset($_SESSION['validUser']) && ($_SESSION['validUser'] == "YES"))
 		{
@@ -49,6 +49,7 @@ session_start();
 				$_SESSION['currentUser'] = $inUsername;
 				$_SESSION['userAuth'] = $userRow['USER_AUTH'];					
 				$_SESSION['userId'] = $userRow['USER_ID'];
+			echo $_SESSION['userAuth'];
 			}
 			else
 			{
@@ -117,6 +118,9 @@ if ($_SESSION['validUser'] == "YES" && $_SESSION['userAuth'] == "BAND")	//This i
 	{
 		header("Location:musicianProfile.php");
 	}
+	else if ($_SESSION['validUser'] == "YES" && $_SESSION['userAuth'] == "ADMIN"){
+		header("Location:banditAdminPortal.php");
+	}
 	else {
 		
 	
@@ -134,6 +138,8 @@ if ($_SESSION['validUser'] == "YES" && $_SESSION['userAuth'] == "BAND")	//This i
                     <span class="errMsg" > <?php if(isset($_POST['loginPassword'])) {echo $loginErrMessage;} ?></span></p>
                   <p><input name="submitLogin" id="submitLogin" value="Login" type="submit" class="button"/> <input type="reset" name="reset" id="reset" value="Reset" class="button">&nbsp;</p>
                 </form>
+                
+                <span><a href="createBanditMusician.php">Create Musician</a></span>
               </div>  
 <?php //turn off HTML and turn on PHP
 	}//end of checking for a valid user
@@ -142,8 +148,7 @@ if ($_SESSION['validUser'] == "YES" && $_SESSION['userAuth'] == "BAND")	//This i
 	$stmt = null;
 //turn off PHP and begin HTML			
 ?>
-<a href='createBand.php'>Create a Band</a>
-<p>Return to <a href='http://www.drewdouglass.net'>www.drewdouglass.net</a></p>
+<p>Return to <a href="http://www.drewdouglass.net">www.drewdouglass.net</a></p>
 
 </body>
 </html>
